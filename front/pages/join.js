@@ -18,7 +18,7 @@ const tailLayout = {
 
 // Component
 const Join = () => {
-  const [selectValue, setSelectValue] = useState('');
+  const [mailTail, setMailTail] = useState('@google.com');
   const dispatch = useDispatch();
 
   const onSubmit = (values) => {
@@ -27,11 +27,11 @@ const Join = () => {
       id: values.id,
       password: values.password,
       nickname: values.nickname,
-      email: values.id,
-      grade: parseInt(values.id, 10),
+      email: values.email + mailTail,
+      grade: parseInt(values.grade, 10),
       department: values.department,
     }));
-    alert('로그인에 성공하셨습니다');
+    alert('회원가입 축하드려요!');
     Router.replace('/');
   };
 
@@ -39,12 +39,12 @@ const Join = () => {
     console.log('Failed:', errorInfo);
   };
 
-  const onChange = (value) => {
-    setSelectValue(value);
+  const onChangeEmail = (value) => {
+    setMailTail(value);
   };
 
   const selectAfter = (
-    <Select defaultValue="@google.com" className="select-after">
+    <Select defaultValue="@google.com" className="select-after" onChange={onChangeEmail}>
       <Option value="@google.com">@google.com</Option>
       <Option value="@naver.com">@naver.com</Option>
       <Option value="@hanyang.ac.kr">@hanyang.ac.kr</Option>
@@ -52,12 +52,13 @@ const Join = () => {
   );
 
   return (
-    <div style={{ backgroundColor: '#272727', height: '900px' }}>
+    <div style={{ backgroundColor: '#272727', height: '900px', position: 'relative', lineHeight: '1em' }}>
       <div>
-        <h1 style={{ color: 'white', textAlign: 'center' }}>새 계정 만들기</h1>
+        <br /><br /><br /><br />
+        <h1 style={{ color: 'white', textAlign: 'center' }}>새 계정 만들기</h1><br />
         <h2 style={{ color: 'white', textAlign: 'center' }}>빠르고 쉽습니다</h2>
       </div>
-      <div style={{ backgroundColor: 'white', width: '450px', height: '500px', position: 'absolute', top: '20%', left: '34%', borderRadius: '10px' }}>
+      <div style={{ backgroundColor: 'white', width: '450px', height: '500px', position: 'absolute', top: '50%', left: '50%', marginTop: '-250px', marginLeft: '-225px', borderRadius: '10px' }}>
         <Form {...layout} name="join" initialValues={{ remember: true }} onFinish={onSubmit} onFinishFailed={onFinishFailed} style={{ marginTop: '60px', marginRight: '70px' }}>
           <Form.Item label="아이디" name="id" rules={[{ required: true, message: '아이디를 입력해 주세요!' }]}>
             <Input />
@@ -83,7 +84,7 @@ const Join = () => {
             <Input addonAfter={selectAfter} />
           </Form.Item>
           <Form.Item label="학년" name="grade" rules={[{ required: true, message: '학년을 입력해 주세요!' }]}>
-            <Select placeholder="학년">
+            <Select>
               <Select.Option value="1">1</Select.Option>
               <Select.Option value="2">2</Select.Option>
               <Select.Option value="3">3</Select.Option>
@@ -94,11 +95,9 @@ const Join = () => {
             <TreeSelect
               showSearch
               style={{ width: '100%' }}
-              value={selectValue}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               allowClear
               treeDefaultExpandAll
-              onChange={onChange}
             >
               <TreeNode value="software" title="소프트웨어대학">
                 <TreeNode value="소프트웨어학부" title={<b style={{ color: '#08c' }}>소프트웨어학부</b>} />
