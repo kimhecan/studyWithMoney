@@ -16,9 +16,8 @@ const LoginForm = () => {
   const dispatch = useDispatch();
 
   const onFinish = (values) => {
-    console.log('Success:', values);
     dispatch(loginRequestAction({
-      id: values.id,
+      userId: values.id,
       password: values.password,
     }));
   };

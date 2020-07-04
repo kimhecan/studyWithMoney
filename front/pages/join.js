@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, TreeSelect, Select, Tooltip } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Button, TreeSelect, Select, Tooltip, Alert } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
-import { joinRequestAction } from '../reducers/user';
+import { joinRequestAction, RESET_SIGN_UP_MESSAGE } from '../reducers/user';
 
 const { Option } = Select;
 const { TreeNode } = TreeSelect;
@@ -19,21 +19,33 @@ const tailLayout = {
 // Component
 const Join = () => {
   const [mailTail, setMailTail] = useState('@google.com');
+  const { signUpMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const onSubmit = (values) => {
     console.log('Success:', values);
     dispatch(joinRequestAction({
-      id: values.id,
+      userId: values.id,
       password: values.password,
       nickname: values.nickname,
       email: values.email + mailTail,
       grade: parseInt(values.grade, 10),
       department: values.department,
     }));
-    alert('회원가입 축하드려요!');
-    Router.replace('/');
   };
+
+  useEffect(() => {
+    console.log(signUpMessage, 'signupmessage');
+    if (signUpMessage === '가입이 완료되었습니다!') {
+      alert(signUpMessage);
+      dispatch({
+        type: RESET_SIGN_UP_MESSAGE,
+      });
+      Router.replace('/');
+    } else if (signUpMessage !== null) {
+      alert(signUpMessage);
+    }
+  }, [signUpMessage]);
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);

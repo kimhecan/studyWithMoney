@@ -6,7 +6,7 @@ import AppLayout from '../components/Applayout';
 const Profile = () => {
   const { info } = useSelector((state) => state.user);
 
-  const infoData = [['아이디', info.id], ['이메일', info.email], ['닉네임', info.nickname], ['학과', info.department]];
+  const infoData = [['아이디', info.userId], ['이메일', info.email], ['닉네임', info.nickname], ['학과', info.department]];
   const PostData = [['질문 수', 10], ['답변 수', 20], ['해결 수:', 30]];
   return (
     <AppLayout>
