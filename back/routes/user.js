@@ -7,7 +7,7 @@ const { User, Post } = require('../models');
 const router = express.Router();
 
 
-router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/ => 가입하기
+router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/ => 회원가입하기
   try {
     const overlapUserId = await User.findOne({ //아이디 중복확인
       where: {
@@ -70,6 +70,29 @@ router.post('/login', isNotLoggedIn, (req, res, next) => { // POST /login/ => �
     });
   })(req, res, next);
 });
+
+router.get('/', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const userWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: {
+          exclude: ['password']
+        },
+        include: [{
+          model: Post,
+          attributes: ['id'],
+        }]
+      })
+      res.status(200).json(userWithoutPassword);
+    } else {
+      res.status(200).json(null)
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+})
 
 router.post('/logout', isLoggedIn, (req, res) => {  // POST /logout/ => 로그아웃하기
   req.logout();

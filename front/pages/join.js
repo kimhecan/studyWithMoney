@@ -44,6 +44,9 @@ const Join = () => {
       Router.replace('/');
     } else if (signUpMessage !== null) {
       alert(signUpMessage);
+      dispatch({
+        type: RESET_SIGN_UP_MESSAGE,
+      });
     }
   }, [signUpMessage]);
 
@@ -88,7 +91,7 @@ const Join = () => {
                 </Tooltip>
               </span>
             )}
-            rules={[{ required: true, message: 'Please input your nickname!', whitespace: true }]}
+            rules={[{ required: true, message: '닉네임을 입력해 주세요!', whitespace: true }]}
           >
             <Input />
           </Form.Item>

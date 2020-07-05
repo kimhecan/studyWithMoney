@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ import {
   BulbOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import { LOG_OUT_REQUEST } from '../reducers/user';
+import { LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
 
 const { SubMenu } = Menu;
 
@@ -19,6 +19,13 @@ const AppLayout = ({ children }) => {
   const { info } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const router = useRouter();
+
+  // SSR처리해야함
+  useEffect(() => {
+    dispatch({
+      type: LOAD_USER_REQUEST,
+    });
+  }, []);
 
   const handleClick = (e) => {
     console.log(e.key);
@@ -36,12 +43,13 @@ const AppLayout = ({ children }) => {
         router.push('/concept');
         break;
       case 'freedom':
-        router.push('/freedom');
+        router.push('/freeBoard');
         break;
       case 'information':
-        router.push('/infomation');
+        router.push('/infoBoard');
         break;
       case 'club':
+        router.push('/clubBoard');
         break;
       case 'inquiry':
         break;
@@ -61,7 +69,7 @@ const AppLayout = ({ children }) => {
       {info.id !== null
         ? (
           <Row>
-            <Col span={4} style={{ height: '900px', backgroundColor: '#001529' }}>
+            <Col span={4} style={{ backgroundColor: '#001529' }}>
               <Menu
                 onClick={handleClick}
                 defaultSelectedKeys={['1']}
@@ -101,6 +109,9 @@ const AppLayout = ({ children }) => {
               </Menu>
             </Col>
             <Col span={20}>
+              <Row style={{ backgroundColor: 'blue', height: '120px' }}>
+                배너
+              </Row>
               {children}
             </Col>
           </Row>

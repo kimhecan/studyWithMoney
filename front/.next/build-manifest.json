@@ -9,10 +9,6 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
-    "/": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
     "/_app": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
@@ -24,15 +20,11 @@
     "/_polyfills": [
       "static/runtime/polyfills.js"
     ],
-    "/index": [
+    "/clubBoard": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/join": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/profile": [
+    "/freeBoard": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

@@ -1,8 +1,8 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { Button, Form, Input, Checkbox } from 'antd';
-import { loginRequestAction } from '../reducers/user';
+import { loginRequestAction, RESET_LOG_IN_MESSAGE } from '../reducers/user';
 
 const layout = {
   labelCol: { span: 8 },
@@ -13,6 +13,7 @@ const tailLayout = {
 };
 
 const LoginForm = () => {
+  const { logInMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const onFinish = (values) => {
@@ -22,9 +23,20 @@ const LoginForm = () => {
     }));
   };
 
+  useEffect(() => {
+    if (logInMessage !== null) {
+      alert(logInMessage);
+      dispatch({
+        type: RESET_LOG_IN_MESSAGE,
+      });
+    }
+  }, [logInMessage]);
+
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
+
 
   return (
     <>

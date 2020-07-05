@@ -11,9 +11,6 @@ const Profile = () => {
   return (
     <AppLayout>
       <div className="site-card-wrapper">
-        <Row style={{ backgroundColor: '#001529', height: '120px' }}>
-          배너
-        </Row>
         <Row gutter={10} style={{ marginTop: '20px', marginLeft: '20px' }}>
           <Col span={12}>
             <Divider orientation="left">기본 정보</Divider>
