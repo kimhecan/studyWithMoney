@@ -8,16 +8,16 @@ const { Post, User, Image } = require('../models');
 const router = express.Router();
 
 try {
-  fs.accessSync('imgs');
+  fs.accessSync('imgs/post');
 } catch {
-  console.log('imgs 폴더가 없으므로 새로 생성합니다.');
-  fs.mkdirSync('imgs');
+  console.log('imgs/post 폴더가 없으므로 새로 생성합니다.');
+  fs.mkdirSync('imgs/post');
 }
 
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, done) {
-      done(null, 'imgs');
+      done(null, 'imgs/post');
     },
     filename(req, file, done) {
       const ext = path.extname(file.originalname);
@@ -31,10 +31,10 @@ const upload = multer({
 
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { //addPost
   try {
-    console.log(req.body);
+    console.log(req.body, 'addPost router에서 req.body');
     const post = await Post.create({
-      title: req.body.title,
       content: req.body.content,
+      category: req.body.category,
       UserId: req.user.id,
     });
     if (req.body.image) {

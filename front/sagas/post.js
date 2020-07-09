@@ -59,8 +59,9 @@ function* watchUploadImages() {
 
 //-------------------------------------------------------------------------
 
-function laodPostsAPI(lastId) { // Post로드하기
-  return axios.get(`/posts?lastId=${lastId || 0}`, lastId);
+function laodPostsAPI(data) { // Post로드하기
+  console.log(data, 'datadatadatadatadata');
+  return axios.get(`/posts?lastId=${data.lastId || 0}&category=${data.category}`);
 }
 
 function* loadPosts(action) {

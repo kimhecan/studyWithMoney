@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.get('/', async (req, res, next) => { // loadPosts
   try {
-    const where = {};
+    const where = { category: req.query.category };
     if (parseInt(req.query.lastId, 10)) {
       where.id = { [Op.lt]: parseInt(req.query.lastId, 10) }
     }

@@ -1,29 +1,28 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Form, Input, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST } from '../reducers/post';
+import useInput from '../hooks/useInput';
 
 const { TextArea } = Input;
 
-const PostForm = () => {
+const PostForm = ({ category }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { imagePaths } = useSelector((state) => state.post);
+  const [content, onChangeContent] = useInput();
 
   const onFinish = (values) => {
     console.log(values);
 
     const formData = new FormData();
-    formData.append('title', values.title);
-    formData.append('content', values.content);
+    formData.append('content', content);
+    formData.append('category', category);
     imagePaths.forEach((p) => {
       formData.append('image', p);
     });
-    console.log(formData.title);
-    console.log(formData.content);
-    console.log(formData.image);
-
     dispatch({
       type: ADD_POST_REQUEST,
       data: formData,
@@ -64,35 +63,32 @@ const PostForm = () => {
 
   return (
     <>
-      <Form name="basic" form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        <Form.Item name="title" rules={[{ required: true, message: '제목을 입력해 주세요!' }]}>
-          <Input placeholder="글 제목" />
-        </Form.Item>
-        <Form.Item name="content" rules={[{ required: true, message: '내용을 입력해주세요!' }]}>
-          <TextArea rows={4} placeholder="여기를 눌러서 글을 작성할 수 있습니다" />
-        </Form.Item>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <Form.Item style={{ flex: '1' }}>
-            <Button type="primary" htmlType="submit">
-              게시하기
-            </Button>
-          </Form.Item>
-          <Form.Item style={{ flex: '1' }} name="image" valuePropName="fileList">
+      <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed} encType="multipart/form-data">
+        <TextArea name="content" value={content} onChange={onChangeContent} rows={4} placeholder="여기를 눌러서 글을 작성할 수 있습니다" required />
+        <div style={{ display: 'flex', flexDirection: 'row', marginTop: '10px' }}>
+          <Button style={{ flex: 1 }} type="primary" htmlType="submit"> 게시하기 </Button>
+          <div style={{ flex: 1, marginLeft: '10px' }}>
             <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages} />
             <Button onClick={onClickImageUpload}>이미지 업로드</Button>
-            <div>
-              {imagePaths.map((v, i) => (
-                <div key={v} style={{ display: 'inline-block', width: '280px', borderRadius: '5px', border: '1px solid #c0c0c0', padding: '10px' }}>
-                  <img src={`http://localhost:3065/${v}`} style={{ width: '50px' }} alt={v} />
-                  <DeleteOutlined onClick={onRemoveImage(i)} style={{ marginLeft: '130px' }} />
-                </div>
-              ))}
+          </div>
+        </div>
+        <div>
+          {imagePaths.map((v, i) => (
+            <div key={v} style={{ display: 'inline-block', width: '280px', borderRadius: '5px', border: '1px solid #c0c0c0', padding: '10px' }}>
+              <img src={`http://localhost:3065/post/${v}`} style={{ width: '50px' }} alt={v} />
+              <DeleteOutlined onClick={onRemoveImage(i)} style={{ marginLeft: '130px' }} />
             </div>
-          </Form.Item>
+          ))}
         </div>
       </Form>
+
+
     </>
   );
+};
+
+PostForm.propTypes = {
+  category: PropTypes.string.isRequired,
 };
 
 export default PostForm;

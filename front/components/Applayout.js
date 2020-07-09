@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import { Menu, Col, Row } from 'antd';
 import { AppstoreOutlined, HomeOutlined, UserOutlined, ContainerOutlined, BulbOutlined, LogoutOutlined } from '@ant-design/icons';
 import { LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
+import { POST_RESET } from '../reducers/post';
 import Board from './board';
 import Main from './main';
 
@@ -26,6 +26,11 @@ const AppLayout = () => {
   const handleClick = (e) => {
     console.log(e.key);
     setCurrent(e.key);
+    if (e.key.slice(4, e.key.length) === 'Board') {
+      dispatch({
+        type: POST_RESET,
+      });
+    }
     if (e.key === 'logout') {
       router.replace('/');
       dispatch({
@@ -85,9 +90,9 @@ const AppLayout = () => {
               </Row>
               <Row style={{ backgroundColor: '#F2F3F5' }}>
                 {current === 'home' && <Main />}
-                {current === 'freeBoard' && <Board title={current} />}
-                {current === 'infoBoard' && <Board title={current} />}
-                {current === 'clubBoard' && <Board title={current} />}
+                {current === 'freeBoard' && <Board category={current} />}
+                {current === 'infoBoard' && <Board category={current} />}
+                {current === 'clubBoard' && <Board category={current} />}
               </Row>
             </Col>
           </Row>

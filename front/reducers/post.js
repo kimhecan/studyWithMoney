@@ -30,6 +30,7 @@ export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
 
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
+export const POST_RESET = 'POST_RESET';
 
 
 export const addPost = (data) => ({
@@ -83,6 +84,10 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case REMOVE_IMAGE:
       draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
+      break;
+    case POST_RESET:
+      draft.postInfos = [];
+      draft.imagePaths = [];
       break;
     default:
       break;
