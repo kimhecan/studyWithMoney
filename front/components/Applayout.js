@@ -1,22 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Menu, Col, Row } from 'antd';
-import {
-  AppstoreOutlined,
-  HomeOutlined,
-  UserOutlined,
-  ContainerOutlined,
-  BulbOutlined,
-  LogoutOutlined,
-} from '@ant-design/icons';
+import { AppstoreOutlined, HomeOutlined, UserOutlined, ContainerOutlined, BulbOutlined, LogoutOutlined } from '@ant-design/icons';
 import { LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
+import Board from './board';
+import Main from './main';
 
 const { SubMenu } = Menu;
 
-const AppLayout = ({ children }) => {
+const AppLayout = () => {
   const { info } = useSelector((state) => state.user);
+  const [current, setCurrent] = useState('home');
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -29,54 +25,29 @@ const AppLayout = ({ children }) => {
 
   const handleClick = (e) => {
     console.log(e.key);
-    switch (e.key) {
-      case 'home':
-        router.push('/main');
-        break;
-      case 'user':
-        router.push('/profile');
-        break;
-      case 'problem':
-        router.push('/problem');
-        break;
-      case 'concept':
-        router.push('/concept');
-        break;
-      case 'freedom':
-        router.push('/freeBoard');
-        break;
-      case 'information':
-        router.push('/infoBoard');
-        break;
-      case 'club':
-        router.push('/clubBoard');
-        break;
-      case 'inquiry':
-        break;
-      case 'logout':
-        router.replace('/');
-        dispatch({
-          type: LOG_OUT_REQUEST,
-        });
-        break;
-      default:
-        break;
+    setCurrent(e.key);
+    if (e.key === 'logout') {
+      router.replace('/');
+      dispatch({
+        type: LOG_OUT_REQUEST,
+      });
     }
   };
 
   return (
     <>
-      {info.id !== null
+      {info && info.id !== null
         ? (
           <Row>
             <Col span={4} style={{ backgroundColor: '#001529' }}>
               <Menu
                 onClick={handleClick}
-                defaultSelectedKeys={['1']}
-                defaultOpenKeys={['']}
+                defaultSelectedKeys={['home']}
+                defaultOpenKeys={[{ current }]}
                 mode="inline"
                 theme="dark"
                 forceSubMenuRender="true"
+
               >
                 <div style={{ height: '130px', textAlign: 'center' }}>
                   <img
@@ -96,9 +67,9 @@ const AppLayout = ({ children }) => {
                   <Menu.Item key="concept">개념이해</Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" icon={<AppstoreOutlined />} title="게시판">
-                  <Menu.Item key="freedom">자유게시판</Menu.Item>
-                  <Menu.Item key="information">정보게시판</Menu.Item>
-                  <Menu.Item key="club">동아리·학회</Menu.Item>
+                  <Menu.Item key="freeBoard">자유게시판</Menu.Item>
+                  <Menu.Item key="infoBoard">정보게시판</Menu.Item>
+                  <Menu.Item key="clubBoard">동아리·학회</Menu.Item>
                 </SubMenu>
                 <Menu.Item key="inquiry" icon={<ContainerOutlined />}>
                   문의하기
@@ -109,20 +80,21 @@ const AppLayout = ({ children }) => {
               </Menu>
             </Col>
             <Col span={20}>
-              <Row style={{ backgroundColor: 'blue', height: '120px' }}>
-                배너
+              <Row style={{ backgroundColor: '#001529', height: '80px' }}>
+                <p style={{ margin: 'auto auto', color: 'white' }}>한양대학교</p>
               </Row>
-              {children}
+              <Row style={{ backgroundColor: '#F2F3F5' }}>
+                {current === 'home' && <Main />}
+                {current === 'freeBoard' && <Board title={current} />}
+                {current === 'infoBoard' && <Board title={current} />}
+                {current === 'clubBoard' && <Board title={current} />}
+              </Row>
             </Col>
           </Row>
         )
         : <p>권한이 없습니다.</p>}
     </>
   );
-};
-
-AppLayout.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default AppLayout;

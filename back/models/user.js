@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
     department: {
       type: DataTypes.STRING(20),
       allowNull: false,
+    },
+    profileImg: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
     }
   }, {
     charset: 'utf8',

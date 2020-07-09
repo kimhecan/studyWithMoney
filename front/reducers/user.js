@@ -1,7 +1,7 @@
 import produce from 'immer';
 
 export const initialState = {
-  info: {},
+  info: null,
   signUpMessage: null,
   logInMessage: null,
   loadUserMessage: null,

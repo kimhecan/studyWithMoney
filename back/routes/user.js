@@ -33,6 +33,7 @@ router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/ => �
       email: req.body.email,
       grade: req.body.grade,
       department: req.body.department,
+      profileImg: 'default.png'
     });
     res.status(201).send('가입이 완료되었습니다!');
   } catch (e) {
@@ -71,7 +72,8 @@ router.post('/login', isNotLoggedIn, (req, res, next) => { // POST /login/ => �
   })(req, res, next);
 });
 
-router.get('/', async (req, res, next) => {
+
+router.get('/', async (req, res, next) => { // loaduser
   try {
     if (req.user) {
       const userWithoutPassword = await User.findOne({
@@ -86,7 +88,7 @@ router.get('/', async (req, res, next) => {
       })
       res.status(200).json(userWithoutPassword);
     } else {
-      res.status(200).json(null)
+      res.status(401).json(null)
     }
   } catch (err) {
     console.error(err);
