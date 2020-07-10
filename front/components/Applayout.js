@@ -12,7 +12,7 @@ const { SubMenu } = Menu;
 
 const AppLayout = () => {
   const { info } = useSelector((state) => state.user);
-  const [current, setCurrent] = useState('home');
+  const [current, setCurrent] = useState('Main');
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -61,7 +61,7 @@ const AppLayout = () => {
                     style={{ width: '150px', marginTop: '10px' }}
                   />
                 </div>
-                <Menu.Item key="home" icon={<HomeOutlined />}>
+                <Menu.Item key="main" icon={<HomeOutlined />}>
                   Home
                 </Menu.Item>
                 <Menu.Item key="user" icon={<UserOutlined />}>
@@ -89,10 +89,17 @@ const AppLayout = () => {
                 <p style={{ margin: 'auto auto', color: 'white' }}>한양대학교</p>
               </Row>
               <Row style={{ backgroundColor: '#F2F3F5' }}>
-                {current === 'home' && <Main />}
-                {current === 'freeBoard' && <Board category={current} />}
-                {current === 'infoBoard' && <Board category={current} />}
-                {current === 'clubBoard' && <Board category={current} />}
+                <Col span={20}>
+                  {current === 'main' && <Main />}
+                  {current === 'freeBoard' && <Board category={current} />}
+                  {current === 'infoBoard' && <Board category={current} />}
+                  {current === 'clubBoard' && <Board category={current} />}
+                </Col>
+                <Col span={4}>
+                  <div style={{}}>
+                    <h1 style={{ color: '#65676b' }}>Sponsored</h1>
+                  </div>
+                </Col>
               </Row>
             </Col>
           </Row>

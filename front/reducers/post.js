@@ -72,6 +72,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case DELETE_POST_REQUEST:
       break;
     case DELETE_POST_SUCCESS:
+      draft.postInfos = draft.postInfos.filter((v) => v.id !== action.data.PostId);
       break;
     case DELETE_POST_FAILURE:
       break;

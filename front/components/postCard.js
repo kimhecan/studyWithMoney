@@ -1,16 +1,32 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Card, Avatar } from 'antd';
-import { SettingOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons';
+import React, { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Card, Avatar, Popover, Button } from 'antd';
+import { LikeOutlined, CommentOutlined, EllipsisOutlined } from '@ant-design/icons';
 import propTypes from 'prop-types';
 import parseDate from '../functions/parseDate';
 import PostImages from './postImages';
+import { DELETE_POST_REQUEST } from '../reducers/post';
 
 const PostCard = ({ post }) => {
-  console.log(post, 'post');
-
   const { info } = useSelector((state) => state.user);
+  const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch();
 
+  const handleVisibleChange = (v) => {
+    setVisible(v);
+  };
+
+  const onRemovePost = useCallback(() => {
+    if (!post) {
+      return alert('로그인이 필요합니다.');
+    }
+    console.log(post.id);
+
+    return dispatch({
+      type: DELETE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [post.id]);
 
   return (
     <>
@@ -37,11 +53,24 @@ const PostCard = ({ post }) => {
           </div>
         )}
         actions={info.id === post.UserId
-          ?
-          [<SettingOutlined key="setting" />, <EditOutlined key="edit" />, <EllipsisOutlined key="ellipsis" />]
-          :
-          [<SettingOutlined key="setting" />, <EditOutlined key="edit" />]
-        }
+          ? [
+            <LikeOutlined key="like" />,
+            <CommentOutlined key="comment" />,
+            <Popover
+              key="more"
+              content={(
+                <Button.Group>
+                  <Button>수정</Button>
+                  <Button onClick={onRemovePost}>삭제</Button>
+                </Button.Group>
+              )}
+              trigger="click"
+              visible={visible}
+              onVisibleChange={handleVisibleChange}
+            >
+              <EllipsisOutlined key="etc" />
+            </Popover>]
+          : [<LikeOutlined key="like" />, <CommentOutlined key="comment" />]}
       />
     </>
   );

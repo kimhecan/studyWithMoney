@@ -57,18 +57,13 @@ const Board = ({ category }) => {
   }, [postInfos, hasMorePosts]);
   return (
     <>
-      <Row>
-        <Col span={20}>
-          <div style={{ margin: '10px 100px' }}>
-            <PageHeader className="site-page-header" title={boardTitle} subTitle={subTitle} />
-            <PostForm category={category} />
-            {postInfos.map((post) => <PostCard key={post.id} post={post} />)}
-          </div>
-        </Col>
-        <Col span={4} style={{ backgroundColor: '#F2F3F5' }}>
-          <h1 style={{ color: '#65676b' }}>Sponsored</h1>
-        </Col>
-      </Row>
+      <div>
+        <div style={{ margin: '10px 10%' }}>
+          <PageHeader className="site-page-header" title={boardTitle} subTitle={subTitle} />
+          <PostForm category={category} />
+          {postInfos.map((post) => <PostCard key={post.id} post={post} />)}
+        </div>
+      </div>
     </>
   );
 };

@@ -66,23 +66,23 @@ const PostForm = ({ category }) => {
       <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed} encType="multipart/form-data">
         <TextArea name="content" value={content} onChange={onChangeContent} rows={4} placeholder="여기를 눌러서 글을 작성할 수 있습니다" required />
         <div style={{ display: 'flex', flexDirection: 'row', marginTop: '10px' }}>
-          <Button style={{ flex: 1 }} type="primary" htmlType="submit"> 게시하기 </Button>
-          <div style={{ flex: 1, marginLeft: '10px' }}>
+          <div style={{ flex: 1 }}>
+            <Button type="primary" htmlType="submit"> 게시하기 </Button>
+          </div>
+          <div style={{ flex: 3, marginLeft: '10px' }}>
             <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages} />
             <Button onClick={onClickImageUpload}>이미지 업로드</Button>
           </div>
         </div>
         <div>
           {imagePaths.map((v, i) => (
-            <div key={v} style={{ display: 'inline-block', width: '280px', borderRadius: '5px', border: '1px solid #c0c0c0', padding: '10px' }}>
+            <div key={v} style={{ width: '250px', borderRadius: '5px', border: '1px solid #c0c0c0', padding: '5px' }}>
               <img src={`http://localhost:3065/post/${v}`} style={{ width: '50px' }} alt={v} />
               <DeleteOutlined onClick={onRemoveImage(i)} style={{ marginLeft: '130px' }} />
             </div>
           ))}
         </div>
       </Form>
-
-
     </>
   );
 };

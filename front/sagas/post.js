@@ -4,6 +4,7 @@ import {
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
   UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE,
   LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
+  DELETE_POST_REQUEST, DELETE_POST_SUCCESS, DELETE_POST_FAILURE,
 } from '../reducers/post';
 
 function AddPostAPI(data) { // 포스트 추가하기
@@ -84,12 +85,39 @@ function* loadPosts(action) {
 function* watchLoadPost() {
   yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
 }
+//----------------------------------------------------------------------
+function deletePostAPI(data) { // Post delete하기
+  console.log(data, 'delete saga data');
+  return axios.delete(`/post/${data}`);
+}
+
+function* deletePost(action) {
+  try {
+    const result = yield call(deletePostAPI, action.data);
+    console.log(result, 'result');
+
+    yield put({
+      type: DELETE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: DELETE_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+function* watchDeletePost() {
+  yield takeLatest(DELETE_POST_REQUEST, deletePost);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
     fork(watchUploadImages),
     fork(watchLoadPost),
+    fork(watchDeletePost),
     // fork(watchUpdatePost),
-    // fork(watchDeletePost),
   ]);
 }
