@@ -12,7 +12,7 @@ const { SubMenu } = Menu;
 
 const AppLayout = () => {
   const { info } = useSelector((state) => state.user);
-  const [current, setCurrent] = useState('Main');
+  const [current, setCurrent] = useState('main');
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -47,7 +47,7 @@ const AppLayout = () => {
             <Col span={4} style={{ backgroundColor: '#001529' }}>
               <Menu
                 onClick={handleClick}
-                defaultSelectedKeys={['home']}
+                defaultSelectedKeys={['main']}
                 defaultOpenKeys={[{ current }]}
                 mode="inline"
                 theme="dark"

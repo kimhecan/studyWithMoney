@@ -28,9 +28,9 @@ export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
 
-
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 export const POST_RESET = 'POST_RESET';
+export const UPDATE_DEfAULT_IMAGES = 'UPDATE_DEfAULT_IMAGES';
 
 
 export const addPost = (data) => ({
@@ -89,6 +89,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case POST_RESET:
       draft.postInfos = [];
       draft.imagePaths = [];
+      break;
+    case UPDATE_DEfAULT_IMAGES:
+      draft.imagePaths = draft.imagePaths.concat(action.data);
       break;
     default:
       break;

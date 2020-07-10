@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Row, Col, PageHeader } from 'antd';
+import { PageHeader } from 'antd';
 import PostForm from './postForm';
 import PostCard from './postCard';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';

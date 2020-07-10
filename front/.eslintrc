@@ -33,5 +33,6 @@
         "arrow-body-style": "off",
         "react/jsx-props-no-spreading": "off",
         "object-property-newline": "off",
+        "camelcase": "off"
     }
 }
