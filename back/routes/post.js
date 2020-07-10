@@ -69,4 +69,22 @@ router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { 
   console.log(req.files);
   res.json(req.files.map((v) => v.filename));
 });
+
+
+router.delete('/:postId', isLoggedIn, async (req, res, next) => {
+  try {
+    await Post.destroy({
+      where: {
+        id: parseInt(req.params.postId, 10),
+        UserId: req.user.id,
+      },
+    });
+    res.status(200).json({ PostId: parseInt(req.params.postId, 10) })
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+
 module.exports = router;
