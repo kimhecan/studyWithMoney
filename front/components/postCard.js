@@ -12,7 +12,6 @@ const PostCard = ({ post }) => {
   const { info } = useSelector((state) => state.user);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [visible, setVisible] = useState(false);
-
   const dispatch = useDispatch();
 
   const handleVisibleChange = (v) => {

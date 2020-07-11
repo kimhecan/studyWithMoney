@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Form, Input, Button, Card } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, UPDATE_POST_REQUEST, UPDATE_DEfAULT_IMAGES } from '../../reducers/post';
+import { UPLOAD_UPDATE_IMAGES_REQUEST, REMOVE_UPDATE_IMAGE, UPDATE_POST_REQUEST, UPDATE_DEfAULT_IMAGES } from '../../reducers/post';
 import useInput from '../../hooks/useInput';
 import { Overlay, Global } from './styles';
 
@@ -12,49 +12,48 @@ const { TextArea } = Input;
 const PostUpdate = ({ post, onClose }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const { imagePaths } = useSelector((state) => state.post);
+  const { updateImagePaths } = useSelector((state) => state.post);
   const [content, onChangeContent] = useInput(post.content);
-
-  console.log(post);
 
   useEffect(() => {
     const src = [];
     post.Images.forEach((v) => {
       src.unshift(v.src);
     });
-    console.log(src);
     dispatch({
       type: UPDATE_DEfAULT_IMAGES,
       data: src,
     });
   }, []);
 
-  const onFinish = (values) => {
-    console.log(values);
-
+  const onFinish = async () => {
     const formData = new FormData();
     formData.append('postId', post.id);
     formData.append('content', content);
-    imagePaths.forEach((p) => {
-      formData.append('image', p);
+    const images = [];
+    updateImagePaths.forEach((p) => {
+      images.unshift(p);
     });
-    dispatch({
+    await dispatch({
       type: UPDATE_POST_REQUEST,
-      data: formData,
+      data: {
+        postId: post.id,
+        content,
+        images,
+      },
     });
-
-    return form.resetFields();
+    onClose();
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
-  const imageInput = useRef();
+  const imageInputUpdate = useRef();
 
   const onClickImageUpload = useCallback(() => {
-    imageInput.current.click();
-  }, [imageInput.current]);
+    imageInputUpdate.current.click();
+  }, [imageInputUpdate.current]);
 
   const onChangeImages = useCallback((e) => {
     console.log('images', e.target.files);
@@ -63,7 +62,7 @@ const PostUpdate = ({ post, onClose }) => {
       imageFormData.append('image', f);
     });
     dispatch({
-      type: UPLOAD_IMAGES_REQUEST,
+      type: UPLOAD_UPDATE_IMAGES_REQUEST,
       data: imageFormData,
     });
   });
@@ -71,7 +70,7 @@ const PostUpdate = ({ post, onClose }) => {
   // map 안에 데이터를 함수에 넣고 싶으면 고차함수 사용
   const onRemoveImage = useCallback((index) => () => {
     dispatch({
-      type: REMOVE_IMAGE,
+      type: REMOVE_UPDATE_IMAGE,
       data: index,
     });
   });
@@ -99,12 +98,12 @@ const PostUpdate = ({ post, onClose }) => {
                       <Button type="primary" htmlType="submit"> 게시하기 </Button>
                     </div>
                     <div style={{ flex: 3, marginLeft: '10px' }}>
-                      <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages} />
+                      <input type="file" multiple hidden ref={imageInputUpdate} onChange={onChangeImages} />
                       <Button onClick={onClickImageUpload}>이미지 업로드</Button>
                     </div>
                   </div>
                   <div>
-                    {imagePaths.map((v, i) => (
+                    {updateImagePaths.map((v, i) => (
                       <div key={v} style={{ width: '250px', borderRadius: '5px', border: '1px solid #c0c0c0', padding: '5px' }}>
                         <img src={`http://localhost:3065/post/${v}`} style={{ width: '50px' }} alt={v} />
                         <DeleteOutlined onClick={onRemoveImage(i)} style={{ marginLeft: '130px' }} />

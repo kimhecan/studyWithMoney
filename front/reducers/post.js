@@ -3,7 +3,9 @@ import produce from 'immer';
 export const initialState = {
   postInfos: [],
   imagePaths: [],
+  updateImagePaths: [],
   addPostMessage: null,
+  updatePostMessage: null,
   hasMorePosts: true,
 };
 
@@ -27,11 +29,14 @@ export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
+export const UPLOAD_UPDATE_IMAGES_REQUEST = 'UPLOAD__UPDATE_IMAGES_REQUEST';
+export const UPLOAD_UPDATE_IMAGES_SUCCESS = 'UPLOAD__UPDATE_IMAGES_SUCCESS';
+export const UPLOAD_UPDATE_IMAGES_FAILURE = 'UPLOAD__UPDATE_IMAGES_FAILURE';
 
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 export const POST_RESET = 'POST_RESET';
+export const REMOVE_UPDATE_IMAGE = 'REMOVE_UPDATE_IMAGE';
 export const UPDATE_DEfAULT_IMAGES = 'UPDATE_DEfAULT_IMAGES';
-
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -42,7 +47,6 @@ export const addPost = (data) => ({
 //   type: ADD_COMMENT_REQUEST,
 //   data,
 // });
-
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
@@ -66,6 +70,10 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case UPDATE_POST_REQUEST:
       break;
     case UPDATE_POST_SUCCESS:
+      const post = draft.postInfos.find((v) => v.id === action.data.id);
+      post.content = action.data.content;
+      post.Images = action.data.Images;
+      draft.updatePostMessage = '수정되었습니다';
       break;
     case UPDATE_POST_FAILURE:
       break;
@@ -83,15 +91,25 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case UPLOAD_IMAGES_FAILURE:
       break;
+    case UPLOAD_UPDATE_IMAGES_REQUEST:
+      break;
+    case UPLOAD_UPDATE_IMAGES_SUCCESS:
+      draft.updateImagePaths = action.data;
+      break;
+    case UPLOAD_UPDATE_IMAGES_FAILURE:
+      break;
     case REMOVE_IMAGE:
       draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
+      break;
+    case REMOVE_UPDATE_IMAGE:
+      draft.updateImagePaths = draft.updateImagePaths.filter((v, i) => i !== action.data);
       break;
     case POST_RESET:
       draft.postInfos = [];
       draft.imagePaths = [];
       break;
     case UPDATE_DEfAULT_IMAGES:
-      draft.imagePaths = draft.imagePaths.concat(action.data);
+      draft.updateImagePaths = action.data;
       break;
     default:
       break;

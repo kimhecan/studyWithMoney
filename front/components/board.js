@@ -61,7 +61,7 @@ const Board = ({ category }) => {
         <div style={{ margin: '10px 10%' }}>
           <PageHeader className="site-page-header" title={boardTitle} subTitle={subTitle} />
           <PostForm category={category} />
-          {postInfos.map((post) => <PostCard key={post.id} post={post} />)}
+          {postInfos && postInfos.map((post) => <PostCard key={post.id} post={post} />)}
         </div>
       </div>
     </>

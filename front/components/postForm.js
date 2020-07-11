@@ -12,7 +12,7 @@ const PostForm = ({ category }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { imagePaths } = useSelector((state) => state.post);
-  const [content, onChangeContent] = useInput();
+  const [content, onChangeContent, setContent] = useInput();
 
   const onFinish = () => {
     const formData = new FormData();
@@ -25,8 +25,7 @@ const PostForm = ({ category }) => {
       type: ADD_POST_REQUEST,
       data: formData,
     });
-
-    return form.resetFields();
+    setContent('');
   };
 
   const onFinishFailed = (errorInfo) => {
