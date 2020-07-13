@@ -14,7 +14,6 @@ router.get('/', async (req, res, next) => { // loadPosts
     const posts = await Post.findAll({
       where,
       limit: 10,
-      order: [['createdAt', 'DESC']],
       include: [{
         model: User, // 게시글 작성자
         attributes: ['id', 'nickname', 'profileImg'],
@@ -26,12 +25,15 @@ router.get('/', async (req, res, next) => { // loadPosts
           model: User, //댓글을 쓴 사람
           attributes: ['id', 'nickname', 'profileImg'],
         }],
-        order: [['createdAt', 'DESC']],
       }, {
         model: User, // 좋아요 누른 사람
         as: 'Likers',
         attributes: ['id'],
-      }]
+      }],
+      order: [
+        ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'DESC']
+      ],
     });
 
     res.status(200).json(posts);

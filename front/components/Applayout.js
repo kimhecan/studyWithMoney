@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import { Menu, Col, Row } from 'antd';
 import { AppstoreOutlined, HomeOutlined, UserOutlined, ContainerOutlined, BulbOutlined, LogoutOutlined } from '@ant-design/icons';
 import { LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
-import { POST_RESET } from '../reducers/post';
-import Board from './board';
+
+import Board from './Board';
 import Main from './main';
 
 const { SubMenu } = Menu;
@@ -21,16 +21,10 @@ const AppLayout = () => {
     dispatch({
       type: LOAD_USER_REQUEST,
     });
-  }, []);
+  }, [current]);
 
   const handleClick = (e) => {
-    console.log(e.key);
     setCurrent(e.key);
-    if (e.key.slice(4, e.key.length) === 'Board') {
-      dispatch({
-        type: POST_RESET,
-      });
-    }
     if (e.key === 'logout') {
       router.replace('/');
       dispatch({

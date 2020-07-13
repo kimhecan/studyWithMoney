@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { PageHeader } from 'antd';
 import PostForm from './PostForm';
 import PostCard from './PostCard';
-import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_POSTS_REQUEST, POST_RESET } from '../reducers/post';
 
 const Board = ({ category }) => {
   const { postInfos, hasMorePosts } = useSelector((state) => state.post);
@@ -28,12 +28,15 @@ const Board = ({ category }) => {
 
   useEffect(() => {
     dispatch({
+      type: POST_RESET,
+    });
+    dispatch({
       type: LOAD_POSTS_REQUEST,
       data: {
         category,
       },
     });
-  }, []);
+  }, [boardTitle]);
 
   useEffect(() => {
     function onScroll() {

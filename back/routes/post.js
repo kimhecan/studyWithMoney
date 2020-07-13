@@ -169,7 +169,8 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { //commen
       include: [{
         model: User,
         attributes: ['id', 'nickname', 'profileImg'],
-      }]
+      }],
+      order: [['createdAt', 'DESC']]
     })
     res.status(201).json(fullComment);
   } catch (e) {
@@ -215,9 +216,9 @@ router.delete('/:postId/comment/:commentId', isLoggedIn, async (req, res, next) 
 
     await Comment.destroy({ where: { id: parseInt(req.params.commentId, 10) } })
     res.json({
-      PostId: parseInt(req.params.commentId, 10),
+      PostId: parseInt(req.params.postId, 10),
       CommentId: parseInt(req.params.commentId, 10),
-      UserId: parseInt(req.user.id, 10)
+      UserId: parseInt(req.user.id, 10),
     })
   } catch (e) {
     console.error(e);

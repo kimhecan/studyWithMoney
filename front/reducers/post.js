@@ -147,7 +147,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case DELETE_COMMENT_REQUEST:
       break;
     case DELETE_COMMENT_SUCCESS:
+      console.log(action.data.PostId);
       const postForDelComment = draft.postInfos.find((v) => v.id === action.data.PostId);
+      console.log(postForDelComment);
       postForDelComment.Comments = postForDelComment.Comments.filter((v) => v.id !== action.data.CommentId);
       break;
     case DELETE_COMMENT_FAILURE:

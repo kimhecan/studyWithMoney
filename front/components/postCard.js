@@ -1,28 +1,25 @@
 import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Card, Avatar, Popover, Button, Comment, List } from 'antd';
+import { Card, Avatar, Popover, Button } from 'antd';
 import { LikeOutlined, CommentOutlined, EllipsisOutlined, NotificationOutlined, EditOutlined, DeleteOutlined, LikeTwoTone, SmileTwoTone } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import parseDate from '../functions/parseDate';
 import PostImages from './PostImages';
 import PostUpdate from './updateZoom/PostUpdate';
 import CommentForm from './CommentForm';
-import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, DELETE_COMMENT_REQUEST } from '../reducers/post';
+import PostComment from './PostComment';
+import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post';
+import comment from '../../back/models/comment';
 
 const PostCard = ({ post }) => {
   const { info } = useSelector((state) => state.user);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [visibleComment, setVisibleComment] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const dispatch = useDispatch();
 
   const handleVisibleChange = (v) => {
     setVisible(v);
-  };
-
-  const CommenthandleVisibleChange = (v) => {
-    setVisibleComment(v);
   };
 
   const onUpdatePost = useCallback(() => {
@@ -66,17 +63,6 @@ const PostCard = ({ post }) => {
     return dispatch({
       type: UNLIKE_POST_REQUEST,
       data: post.id,
-    });
-  }, [info.id]);
-
-  const onRemoveComment = useCallback((commentId) => {
-    console.log(commentId, 'commentId');
-    if (!info.id) {
-      return alert('로그인이 필요합니다.');
-    }
-    return dispatch({
-      type: DELETE_COMMENT_REQUEST,
-      data: { commentId, postId: post.id },
     });
   }, [info.id]);
 
@@ -154,40 +140,7 @@ const PostCard = ({ post }) => {
       {commentFormOpened && (
         <div>
           <CommentForm post={post} />
-          {post.Comments.length > 0
-            && (
-              <List
-                itemLayout="horizontal"
-                dataSource={post.Comments}
-                style={{ boxShadow: '0px 0px 1px 0.05px gray', borderRadius: '10px' }}
-                renderItem={(item) => (
-                  <Comment
-                    style={{ backgroundColor: 'white' }}
-                    author={item.User.nickname}
-                    avatar={<Avatar src={`http://localhost:3065/profile/${item.User.profileImg}`} style={{ marginLeft: '7px' }} />}
-                    content={(
-                      <>
-                        <span style={{ backgroundColor: '#F2F3F5', padding: '7px', borderRadius: '10px' }}>{item.content}</span>
-                        <div style={{ display: 'inline-block' }}>
-                          {item.User.id === info.id
-                            && (
-                              <Popover
-                                key="moreComment"
-                                content={<Button onClick={() => onRemoveComment(item.id)}><DeleteOutlined />삭제</Button>}
-                                trigger="click"
-                                visible={visibleComment}
-                                onVisibleChange={CommenthandleVisibleChange}
-                              >
-                                <EllipsisOutlined key="etc" />
-                              </Popover>
-                            )}
-                        </div>
-                      </>
-                    )}
-                  />
-                )}
-              />
-            )}
+          {post.Comments.length > 0 && post.Comments.map((v) => <PostComment key={v.id} post={post} comment={v} />)}
         </div>
       )}
     </>
