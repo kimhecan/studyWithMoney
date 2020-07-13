@@ -1,6 +1,6 @@
 # studyWithMoney
 
-studyWithMoney is for hanyang university student
+studyWithMoney is community for hanyang university student
 
 ## Installation
 
@@ -8,6 +8,12 @@ Use the package manager [npm](https://nodejs.org/en/) to install
 
 ```bash
 cd front
+npm i
+npm start
+```
+
+```bash
+cd back
 npm i
 npm start
 ```
