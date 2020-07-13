@@ -58,7 +58,11 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { //addPos
         include: [{
           model: User, // 게시물의 댓글 작성자
           attributes: ['id', 'nickname', 'profileImg'],
-        }]
+        },]
+      }, {
+        model: User, // 좋아요 누른 사람
+        as: 'Likers',
+        attributes: ['id'],
       }]
     });
 
@@ -147,7 +151,7 @@ router.put('/', isLoggedIn, async (req, res, next) => { // 포스트 업데이�
 });
 
 
-router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
+router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { //comment 추가
   try {
     const post = await Post.findOne({
       where: { id: parseInt(req.params.postId, 10) },
@@ -168,6 +172,53 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
       }]
     })
     res.status(201).json(fullComment);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+})
+
+router.patch('/:postId/like', isLoggedIn, async (req, res, next) => { //좋아요
+  try {
+    const post = await Post.findOne({ where: { id: parseInt(req.params.postId) } });
+    if (!post) return res.status(403).send('게시글이 존재하지 않습니다.');
+
+    await post.addLikers(req.user.id);
+    res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+router.delete('/:postId/unlike', isLoggedIn, async (req, res, next) => { //좋아요취소
+  try {
+    const post = await Post.findOne({ where: { id: parseInt(req.params.postId, 10) } });
+    if (!post) return res.status(403).send('게시글이 존재하지 않습니다.');
+    await post.removeLikers(req.user.id);
+    res.json({ PostId: post.id, UserId: req.user.id })
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+})
+
+router.delete('/:postId/comment/:commentId', isLoggedIn, async (req, res, next) => { //댓글 삭제
+  try {
+    const comment = await Comment.findOne({
+      where: {
+        id: parseInt(req.params.commentId, 10),
+        postId: parseInt(req.params.postId, 10),
+      }
+    });
+    if (!comment) return res.status(403).send('댓글이 존재하지 않습니다.');
+
+    await Comment.destroy({ where: { id: parseInt(req.params.commentId, 10) } })
+    res.json({
+      PostId: parseInt(req.params.commentId, 10),
+      CommentId: parseInt(req.params.commentId, 10),
+      UserId: parseInt(req.user.id, 10)
+    })
   } catch (e) {
     console.error(e);
     next(e);

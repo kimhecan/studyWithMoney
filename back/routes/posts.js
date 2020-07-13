@@ -21,12 +21,16 @@ router.get('/', async (req, res, next) => { // loadPosts
       }, {
         model: Image, // 게시글의 이미지
       }, {
-        model: Comment,
+        model: Comment, // 게시글의 댓글
         include: [{
-          model: User,
+          model: User, //댓글을 쓴 사람
           attributes: ['id', 'nickname', 'profileImg'],
         }],
         order: [['createdAt', 'DESC']],
+      }, {
+        model: User, // 좋아요 누른 사람
+        as: 'Likers',
+        attributes: ['id'],
       }]
     });
 

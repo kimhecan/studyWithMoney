@@ -1,23 +1,28 @@
 import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Card, Avatar, Popover, Button, Comment, List } from 'antd';
-import { LikeOutlined, CommentOutlined, EllipsisOutlined, NotificationOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { LikeOutlined, CommentOutlined, EllipsisOutlined, NotificationOutlined, EditOutlined, DeleteOutlined, LikeTwoTone, SmileTwoTone } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import parseDate from '../functions/parseDate';
 import PostImages from './PostImages';
 import PostUpdate from './updateZoom/PostUpdate';
 import CommentForm from './CommentForm';
-import { DELETE_POST_REQUEST } from '../reducers/post';
+import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, DELETE_COMMENT_REQUEST } from '../reducers/post';
 
 const PostCard = ({ post }) => {
   const { info } = useSelector((state) => state.user);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [visibleComment, setVisibleComment] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const dispatch = useDispatch();
 
   const handleVisibleChange = (v) => {
     setVisible(v);
+  };
+
+  const CommenthandleVisibleChange = (v) => {
+    setVisibleComment(v);
   };
 
   const onUpdatePost = useCallback(() => {
@@ -42,15 +47,47 @@ const PostCard = ({ post }) => {
   }, [post.id]);
 
   const onToggleComment = useCallback(() => {
-    console.log(123);
     setCommentFormOpened((prev) => !prev);
   }, []);
+
+  const onLike = useCallback(() => {
+    if (!info.id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
+      type: LIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [info.id]);
+  const onUnlike = useCallback(() => {
+    if (!info.id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [info.id]);
+
+  const onRemoveComment = useCallback((commentId) => {
+    console.log(commentId, 'commentId');
+    if (!info.id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
+      type: DELETE_COMMENT_REQUEST,
+      data: { commentId, postId: post.id },
+    });
+  }, [info.id]);
+
+  const liked = post.Likers.find((v) => v.id === info.id);
 
   return (
     <>
       <Card
         style={{ marginTop: '100px', borderTopLeftRadius: '15px', borderTopRightRadius: '15px', boxShadow: '0px 0px 1px 0.05px gray' }}
         hoverable
+        bodyStyle={{ padding: '0px' }}
         cover={(
           <div>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -69,13 +106,20 @@ const PostCard = ({ post }) => {
             <p style={{ margin: '7px 15px', fontSize: '18px' }}>{post.content}</p>
             {post.Images.length > 0 && <PostImages alt="image" images={post.Images} />}
             {showUpdateForm && <PostUpdate post={post} onClose={onCloseUpdateForm} />}
-            {post.Comments.length > 0 && <p onClick={onToggleComment} style={{ float: 'right', marginRight: '10px', color: 'gray' }}>댓글 {post.Comments.length}개</p>}
+            {(post.Likers.length > 0 || post.Comments.length) > 0 && (
+              <div>
+                {post.Likers.length > 0 && <SmileTwoTone style={{ marginLeft: '10px', display: 'inline-block' }} />}
+                {post.Likers.length > 0 && <p style={{ marginLeft: '10px', marginBottom: '10px', display: 'inline-block' }}>{post.Likers.length}명</p>}
+                {post.Comments.length > 0 && <span onClick={onToggleComment} style={{ float: 'right', marginRight: '10px', color: 'gray' }}>댓글 {post.Comments.length}개</span>}
+              </div>
+            )}
           </div>
         )}
         actions={[
           <div>
-            <LikeOutlined key="like" />
-            <strong style={{ marginLeft: '5px' }}>좋아요</strong>
+            {liked
+              ? <div onClick={onUnlike}><LikeTwoTone key="like" onClick={onUnlike} /><strong style={{ marginLeft: '5px' }}>좋아요</strong></div>
+              : <div onClick={onLike}><LikeOutlined key="unlike" onClick={onLike} /><strong style={{ marginLeft: '5px' }}>좋아요</strong></div>}
           </div>,
           <div onClick={onToggleComment}>
             <CommentOutlined key="comment" />
@@ -121,9 +165,25 @@ const PostCard = ({ post }) => {
                     style={{ backgroundColor: 'white' }}
                     author={item.User.nickname}
                     avatar={<Avatar src={`http://localhost:3065/profile/${item.User.profileImg}`} style={{ marginLeft: '7px' }} />}
-                    content={
-                      <span style={{ backgroundColor: '#F2F3F5', padding: '7px', borderRadius: '10px' }}>{item.content}</span>
-                    }
+                    content={(
+                      <>
+                        <span style={{ backgroundColor: '#F2F3F5', padding: '7px', borderRadius: '10px' }}>{item.content}</span>
+                        <div style={{ display: 'inline-block' }}>
+                          {item.User.id === info.id
+                            && (
+                              <Popover
+                                key="moreComment"
+                                content={<Button onClick={() => onRemoveComment(item.id)}><DeleteOutlined />삭제</Button>}
+                                trigger="click"
+                                visible={visibleComment}
+                                onVisibleChange={CommenthandleVisibleChange}
+                              >
+                                <EllipsisOutlined key="etc" />
+                              </Popover>
+                            )}
+                        </div>
+                      </>
+                    )}
                   />
                 )}
               />

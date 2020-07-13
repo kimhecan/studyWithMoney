@@ -50,7 +50,7 @@ const LoginForm = () => {
               <Form.Item label="비밀번호" name="password" rules={[{ required: true, message: '비밀번호를 입력해 주세요!!' }]}>
                 <Input.Password />
               </Form.Item>
-              <Form.Item {...tailLayout} style={{ marginTop: '-15px' }}>
+              <Form.Item {...tailLayout} style={{ marginTop: '-3px' }}>
                 <Button type="primary" htmlType="submit" ghost style={{ marginRight: '10px' }}>로그인</Button>
                 <Button type="primary" htmlType="button"><Link href="/join"><a>회원가입</a></Link></Button>
               </Form.Item>

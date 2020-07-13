@@ -7,6 +7,8 @@ export const initialState = {
   addPostMessage: null,
   updatePostMessage: null,
   addCommentMessage: null,
+  addLikeMessage: null,
+  deleteCommentMessage: null,
   hasMorePosts: true,
 };
 
@@ -37,6 +39,18 @@ export const UPLOAD_UPDATE_IMAGES_FAILURE = 'UPLOAD__UPDATE_IMAGES_FAILURE';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
+export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
+export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
+export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
+
+export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
+export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
+export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
+
+export const DELETE_COMMENT_REQUEST = 'DELETE_COMMENT_REQUEST';
+export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS';
+export const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE';
 
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 export const POST_RESET = 'POST_RESET';
@@ -106,11 +120,38 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case ADD_COMMENT_REQUEST:
       break;
     case ADD_COMMENT_SUCCESS:
-      const postforComment = draft.postInfos.find((v) => v.id === action.data.PostId);
-      postforComment.Comments ? postforComment.Comments.unshift(action.data) : postforComment.Comments = [action.data];
+      const postForAddComment = draft.postInfos.find((v) => v.id === action.data.PostId);
+      postForAddComment.Comments.unshift(action.data);
       break;
     case ADD_COMMENT_FAILURE:
       draft.addCommentMessage = action.data;
+      break;
+    case LIKE_POST_REQUEST:
+      break;
+    case LIKE_POST_SUCCESS:
+      const postForLike = draft.postInfos.find((v) => v.id === action.data.PostId);
+      postForLike.Likers.push({ id: action.data.UserId });
+      break;
+    case LIKE_POST_FAILURE:
+      draft.addLikeMessage = action.data;
+      break;
+    case UNLIKE_POST_REQUEST:
+      break;
+    case UNLIKE_POST_SUCCESS:
+      const postforUnlike = draft.postInfos.find((v) => v.id === action.data.PostId);
+      postforUnlike.Likers = postforUnlike.Likers.filter((v) => v.id !== action.data.UserId);
+      break;
+    case UNLIKE_POST_FAILURE:
+      draft.addLikeMessage = action.data;
+      break;
+    case DELETE_COMMENT_REQUEST:
+      break;
+    case DELETE_COMMENT_SUCCESS:
+      const postForDelComment = draft.postInfos.find((v) => v.id === action.data.PostId);
+      postForDelComment.Comments = postForDelComment.Comments.filter((v) => v.id !== action.data.CommentId);
+      break;
+    case DELETE_COMMENT_FAILURE:
+      draft.deleteCommentMessage = action.data;
       break;
     case REMOVE_IMAGE:
       draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
