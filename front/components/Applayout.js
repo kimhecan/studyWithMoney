@@ -44,19 +44,19 @@ const AppLayout = () => {
       {info && info.id !== null
         ? (
           <Row>
-            <Col span={4} style={{ backgroundColor: '#001529' }}>
+            <Col span={4}>
               <Menu
                 onClick={handleClick}
                 defaultSelectedKeys={['main']}
                 defaultOpenKeys={[{ current }]}
                 mode="inline"
-                theme="dark"
                 forceSubMenuRender="true"
+                style={{ borderRadius: '15px' }}
 
               >
                 <div style={{ height: '130px', textAlign: 'center' }}>
                   <img
-                    src="https://user-images.githubusercontent.com/39295881/86248913-7f8de080-bbe9-11ea-801a-73f4f426ed0d.png"
+                    src="http://localhost:3065//profile/logo.png"
                     alt="img"
                     style={{ width: '150px', marginTop: '10px' }}
                   />
@@ -85,8 +85,8 @@ const AppLayout = () => {
               </Menu>
             </Col>
             <Col span={20}>
-              <Row style={{ backgroundColor: '#001529', height: '80px' }}>
-                <p style={{ margin: 'auto auto', color: 'white' }}>한양대학교</p>
+              <Row style={{ backgroundColor: '#F2F3F5', height: '80px' }}>
+                <h2 style={{ margin: 'auto auto', color: 'gray', fontWeight: 'bolder' }}>하냥대학교</h2>
               </Row>
               <Row style={{ backgroundColor: '#F2F3F5' }}>
                 <Col span={20}>

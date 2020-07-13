@@ -7,6 +7,7 @@ import {
   DELETE_POST_REQUEST, DELETE_POST_SUCCESS, DELETE_POST_FAILURE,
   UPDATE_POST_REQUEST, UPDATE_POST_SUCCESS, UPDATE_POST_FAILURE,
   UPLOAD_UPDATE_IMAGES_REQUEST, UPLOAD_UPDATE_IMAGES_SUCCESS, UPLOAD_UPDATE_IMAGES_FAILURE,
+  ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
 } from '../reducers/post';
 
 function AddPostAPI(data) { // 포스트 추가하기
@@ -165,6 +166,32 @@ function* watchUpdatePost() {
   yield takeLatest(UPDATE_POST_REQUEST, updatePost);
 }
 
+// ------------------------------------------------------------------
+function addCommentAPI(data) { // Post에 댓글달기
+  console.log(data, 'sga에서 보내는 데이터');
+  return axios.post(`/post/${data.postId}/comment`, data);
+}
+
+function* addComment(action) {
+  try {
+    const result = yield call(addCommentAPI, action.data);
+    console.log(result, 'addcomment 백엔드에서 받은 데이터');
+    yield put({
+      type: ADD_COMMENT_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: ADD_COMMENT_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+function* watchAddComment() {
+  yield takeLatest(ADD_COMMENT_REQUEST, addComment);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
@@ -173,5 +200,6 @@ export default function* postSaga() {
     fork(watchDeletePost),
     fork(watchUpdatePost),
     fork(watchUploadUpdateImages),
+    fork(watchAddComment),
   ]);
 }

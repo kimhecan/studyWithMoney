@@ -28,9 +28,13 @@ const Index = () => {
             </div>
           </div>
         )
-        : <Applayout />}
+        :
+        <div style={{ backgroundColor: '#F2F3F5', height: `${height}px` }}>
+          <Applayout />
+        </div>
+      }
     </>
   );
-};
+}
 
 export default Index;

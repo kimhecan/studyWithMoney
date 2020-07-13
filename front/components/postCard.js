@@ -1,17 +1,19 @@
 import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Card, Avatar, Popover, Button } from 'antd';
-import { LikeOutlined, CommentOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { Card, Avatar, Popover, Button, Comment, List } from 'antd';
+import { LikeOutlined, CommentOutlined, EllipsisOutlined, NotificationOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import parseDate from '../functions/parseDate';
-import PostImages from './postImages';
-import PostUpdate from './updateZoom/postUpdate';
+import PostImages from './PostImages';
+import PostUpdate from './updateZoom/PostUpdate';
+import CommentForm from './CommentForm';
 import { DELETE_POST_REQUEST } from '../reducers/post';
 
 const PostCard = ({ post }) => {
   const { info } = useSelector((state) => state.user);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [commentFormOpened, setCommentFormOpened] = useState(false);
   const dispatch = useDispatch();
 
   const handleVisibleChange = (v) => {
@@ -39,10 +41,15 @@ const PostCard = ({ post }) => {
     });
   }, [post.id]);
 
+  const onToggleComment = useCallback(() => {
+    console.log(123);
+    setCommentFormOpened((prev) => !prev);
+  }, []);
+
   return (
     <>
       <Card
-        style={{ marginTop: '100px', borderTopLeftRadius: '15px', borderTopRightRadius: '15px' }}
+        style={{ marginTop: '100px', borderTopLeftRadius: '15px', borderTopRightRadius: '15px', boxShadow: '0px 0px 1px 0.05px gray' }}
         hoverable
         cover={(
           <div>
@@ -62,28 +69,67 @@ const PostCard = ({ post }) => {
             <p style={{ margin: '7px 15px', fontSize: '18px' }}>{post.content}</p>
             {post.Images.length > 0 && <PostImages alt="image" images={post.Images} />}
             {showUpdateForm && <PostUpdate post={post} onClose={onCloseUpdateForm} />}
+            {post.Comments.length > 0 && <p onClick={onToggleComment} style={{ float: 'right', marginRight: '10px', color: 'gray' }}>댓글 {post.Comments.length}개</p>}
           </div>
         )}
-        actions={info.id === post.UserId
-          ? [
-            <LikeOutlined key="like" />,
-            <CommentOutlined key="comment" />,
-            <Popover
-              key="more"
-              content={(
-                <Button.Group>
-                  <Button onClick={onUpdatePost}>수정</Button>
-                  <Button onClick={onRemovePost}>삭제</Button>
-                </Button.Group>
-              )}
-              trigger="click"
-              visible={visible}
-              onVisibleChange={handleVisibleChange}
-            >
-              <EllipsisOutlined key="etc" />
-            </Popover>]
-          : [<LikeOutlined key="like" />, <CommentOutlined key="comment" />]}
+        actions={[
+          <div>
+            <LikeOutlined key="like" />
+            <strong style={{ marginLeft: '5px' }}>좋아요</strong>
+          </div>,
+          <div onClick={onToggleComment}>
+            <CommentOutlined key="comment" />
+            <strong style={{ marginLeft: '5px' }}>댓글 달기</strong>
+          </div>,
+          info.id === post.UserId
+            ? (
+              <Popover
+                key="more"
+                content={(
+                  <Button.Group>
+                    <Button onClick={onUpdatePost}><EditOutlined />수정</Button>
+                    <Button onClick={onRemovePost}><DeleteOutlined />삭제</Button>
+                  </Button.Group>
+                )}
+                trigger="click"
+                visible={visible}
+                onVisibleChange={handleVisibleChange}
+              >
+                <EllipsisOutlined key="etc" />
+              </Popover>
+            )
+            : (
+              <div>
+                <NotificationOutlined key="report" />
+                <strong style={{ marginLeft: '5px' }}>신고하기</strong>
+              </div>
+
+            ),
+        ]}
       />
+      {commentFormOpened && (
+        <div>
+          <CommentForm post={post} />
+          {post.Comments.length > 0
+            && (
+              <List
+                itemLayout="horizontal"
+                dataSource={post.Comments}
+                style={{ boxShadow: '0px 0px 1px 0.05px gray', borderRadius: '10px' }}
+                renderItem={(item) => (
+                  <Comment
+                    style={{ backgroundColor: 'white' }}
+                    author={item.User.nickname}
+                    avatar={<Avatar src={`http://localhost:3065/profile/${item.User.profileImg}`} style={{ marginLeft: '7px' }} />}
+                    content={
+                      <span style={{ backgroundColor: '#F2F3F5', padding: '7px', borderRadius: '10px' }}>{item.content}</span>
+                    }
+                  />
+                )}
+              />
+            )}
+        </div>
+      )}
     </>
   );
 };

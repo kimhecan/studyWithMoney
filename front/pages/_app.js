@@ -10,7 +10,7 @@ const App = ({ Component }) => (
       <meta charSet="utf-8" />
       <title>TIL</title>
     </Head>
-    <Component />
+    <Component style={{ backgroundColor: '#F2F3F5' }} />
   </>
 );
 

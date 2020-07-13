@@ -67,11 +67,11 @@ const Join = () => {
   );
 
   return (
-    <div style={{ backgroundColor: '#272727', height: '900px', position: 'relative', lineHeight: '1em' }}>
+    <div style={{ backgroundColor: '#F2F3F5', height: '900px', position: 'relative', lineHeight: '1em' }}>
       <div>
         <br /><br /><br /><br />
-        <h1 style={{ color: 'white', textAlign: 'center' }}>새 계정 만들기</h1><br />
-        <h2 style={{ color: 'white', textAlign: 'center' }}>빠르고 쉽습니다</h2>
+        <h1 style={{ color: 'gray', textAlign: 'center' }}>새 계정 만들기</h1><br />
+        <h2 style={{ color: 'gray', textAlign: 'center' }}>빠르고 쉽습니다</h2>
       </div>
       <div style={{ backgroundColor: 'white', width: '450px', height: '500px', position: 'absolute', top: '50%', left: '50%', marginTop: '-250px', marginLeft: '-225px', borderRadius: '10px' }}>
         <Form {...layout} name="join" initialValues={{ remember: true }} onFinish={onSubmit} onFinishFailed={onFinishFailed} style={{ marginTop: '60px', marginRight: '70px' }}>

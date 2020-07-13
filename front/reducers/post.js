@@ -6,6 +6,7 @@ export const initialState = {
   updateImagePaths: [],
   addPostMessage: null,
   updatePostMessage: null,
+  addCommentMessage: null,
   hasMorePosts: true,
 };
 
@@ -32,6 +33,10 @@ export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 export const UPLOAD_UPDATE_IMAGES_REQUEST = 'UPLOAD__UPDATE_IMAGES_REQUEST';
 export const UPLOAD_UPDATE_IMAGES_SUCCESS = 'UPLOAD__UPDATE_IMAGES_SUCCESS';
 export const UPLOAD_UPDATE_IMAGES_FAILURE = 'UPLOAD__UPDATE_IMAGES_FAILURE';
+
+export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
+export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 export const POST_RESET = 'POST_RESET';
@@ -97,6 +102,15 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.updateImagePaths = action.data;
       break;
     case UPLOAD_UPDATE_IMAGES_FAILURE:
+      break;
+    case ADD_COMMENT_REQUEST:
+      break;
+    case ADD_COMMENT_SUCCESS:
+      const postforComment = draft.postInfos.find((v) => v.id === action.data.PostId);
+      postforComment.Comments ? postforComment.Comments.unshift(action.data) : postforComment.Comments = [action.data];
+      break;
+    case ADD_COMMENT_FAILURE:
+      draft.addCommentMessage = action.data;
       break;
     case REMOVE_IMAGE:
       draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);

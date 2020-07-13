@@ -68,13 +68,13 @@ const PostForm = ({ category }) => {
           </div>
           <div style={{ flex: 3, marginLeft: '10px' }}>
             <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages} />
-            <Button onClick={onClickImageUpload}>이미지 업로드</Button>
+            <Button style={{ float: 'right' }} onClick={onClickImageUpload}>이미지 업로드</Button>
           </div>
         </div>
-        <div>
+        <div style={{ float: 'right' }}>
           {imagePaths.map((v, i) => (
             <div key={v} style={{ width: '250px', borderRadius: '5px', border: '1px solid #c0c0c0', padding: '5px' }}>
-              <img src={`http://localhost:3065/post/${v}`} style={{ width: '50px' }} alt={v} />
+              <img src={`http://localhost:3065/post/${v}`} style={{ width: '30px' }} alt={v} />
               <DeleteOutlined onClick={onRemoveImage(i)} style={{ marginLeft: '130px' }} />
             </div>
           ))}

@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Form, Input, Button, Card } from 'antd';
+import { Form, Input, Button, Card, Avatar } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { UPLOAD_UPDATE_IMAGES_REQUEST, REMOVE_UPDATE_IMAGE, UPDATE_POST_REQUEST, UPDATE_DEfAULT_IMAGES } from '../../reducers/post';
 import useInput from '../../hooks/useInput';
@@ -85,10 +85,17 @@ const PostUpdate = ({ post, onClose }) => {
               <div>
                 <h3 style={{ display: 'inline-block' }}>게시물 수정</h3>
                 <Button onClick={onClose} shape="circle" style={{ float: 'right' }}>X</Button>
+                <br />
+                <Avatar
+                  src={`http://localhost:3065/profile/${post.User.profileImg}`}
+                  size="large"
+                  style={{ width: '50px', height: '50px' }}
+                />
+                <strong style={{ fontSize: '16px', marginLeft: '7px' }}>{post.User.nickname}</strong>
               </div>
 
             )}
-            style={{ width: '540px', height: '500px', borderRadius: '10px' }}
+            style={{ width: '540px', height: '500px', borderRadius: '10px', padding: '10px' }}
             cover={
               (
                 <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed} encType="multipart/form-data" style={{}}>
@@ -99,13 +106,13 @@ const PostUpdate = ({ post, onClose }) => {
                     </div>
                     <div style={{ flex: 3, marginLeft: '10px' }}>
                       <input type="file" multiple hidden ref={imageInputUpdate} onChange={onChangeImages} />
-                      <Button onClick={onClickImageUpload}>이미지 업로드</Button>
+                      <Button style={{ float: 'right' }} onClick={onClickImageUpload}>이미지 업로드</Button>
                     </div>
                   </div>
-                  <div>
+                  <div style={{ float: 'right' }}>
                     {updateImagePaths.map((v, i) => (
                       <div key={v} style={{ width: '250px', borderRadius: '5px', border: '1px solid #c0c0c0', padding: '5px' }}>
-                        <img src={`http://localhost:3065/post/${v}`} style={{ width: '50px' }} alt={v} />
+                        <img src={`http://localhost:3065/post/${v}`} style={{ width: '30px' }} alt={v} />
                         <DeleteOutlined onClick={onRemoveImage(i)} style={{ marginLeft: '130px' }} />
                       </div>
                     ))}

@@ -1,7 +1,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 
-const { Post, Image, User } = require('../models');
+const { Post, Image, User, Comment } = require('../models');
 
 const router = express.Router()
 
@@ -16,10 +16,17 @@ router.get('/', async (req, res, next) => { // loadPosts
       limit: 10,
       order: [['createdAt', 'DESC']],
       include: [{
-        model: User,
+        model: User, // 게시글 작성자
         attributes: ['id', 'nickname', 'profileImg'],
       }, {
-        model: Image,
+        model: Image, // 게시글의 이미지
+      }, {
+        model: Comment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname', 'profileImg'],
+        }],
+        order: [['createdAt', 'DESC']],
       }]
     });
 

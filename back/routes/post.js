@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { isLoggedIn } = require('./middleware');
-const { Post, User, Image } = require('../models');
+const { Post, User, Image, Comment } = require('../models');
 
 const router = express.Router();
 
@@ -49,10 +49,16 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { //addPos
     const fullPost = await Post.findOne({
       where: { id: post.id },
       include: [{
-        model: Image,
+        model: Image, // 게시물 이미지
       }, {
-        model: User,
+        model: User, // 게시글 작성자
         attributes: ['id', 'nickname', 'profileImg'],
+      }, {
+        model: Comment,
+        include: [{
+          model: User, // 게시물의 댓글 작성자
+          attributes: ['id', 'nickname', 'profileImg'],
+        }]
       }]
     });
 
@@ -133,9 +139,35 @@ router.put('/', isLoggedIn, async (req, res, next) => { // 포스트 업데이�
         attributes: ['id', 'nickname', 'profileImg'],
       }]
     });
-
-    console.log(updatePost);
     return res.status(200).json(updatePost);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+
+router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: parseInt(req.params.postId, 10) },
+    });
+    if (!post) {
+      return res.status(403).send('존재하지 않는 게시글입니다.');
+    }
+    const comment = await Comment.create({
+      content: req.body.content,
+      PostId: parseInt(req.params.postId, 10),
+      UserId: req.user.id,
+    })
+    const fullComment = await Comment.findOne({
+      where: { id: comment.id },
+      include: [{
+        model: User,
+        attributes: ['id', 'nickname', 'profileImg'],
+      }]
+    })
+    res.status(201).json(fullComment);
   } catch (e) {
     console.error(e);
     next(e);
