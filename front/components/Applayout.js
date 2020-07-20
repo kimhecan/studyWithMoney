@@ -6,6 +6,7 @@ import { AppstoreOutlined, HomeOutlined, UserOutlined, ContainerOutlined, BulbOu
 import { LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
 
 import Board from './Board';
+import Selection from './Selection';
 import Main from './main';
 
 const { SubMenu } = Menu;
@@ -85,6 +86,8 @@ const AppLayout = () => {
               <Row style={{ backgroundColor: '#F2F3F5' }}>
                 <Col span={20}>
                   {current === 'main' && <Main />}
+                  {current === 'problem' && <Selection />}
+                  {/* {current === 'concept' && <Board category={current} />} */}
                   {current === 'freeBoard' && <Board category={current} />}
                   {current === 'infoBoard' && <Board category={current} />}
                   {current === 'clubBoard' && <Board category={current} />}
