@@ -9,7 +9,6 @@ import PostUpdate from './updateZoom/PostUpdate';
 import CommentForm from './CommentForm';
 import PostComment from './PostComment';
 import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post';
-import comment from '../../back/models/comment';
 
 const PostCard = ({ post }) => {
   const { info } = useSelector((state) => state.user);

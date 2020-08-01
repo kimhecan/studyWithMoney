@@ -7,21 +7,21 @@ import { ADD_COMMENT_REQUEST } from '../reducers/post';
 
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
-  const id = useSelector((state) => state.user.info);
+  const { info } = useSelector((state) => state.user);
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
 
   const onSubmitComment = useCallback(() => {
     setCommentText('');
     dispatch({
       type: ADD_COMMENT_REQUEST,
-      data: { content: commentText, postId: post.id, userId: id },
+      data: { content: commentText, postId: post.id, userId: info.id },
     });
-  }, [commentText, id]);
+  }, [commentText, info.id]);
   return (
     <>
       <Form onFinish={onSubmitComment} style={{ backgroundColor: 'white' }}>
         <Avatar
-          src={`http://localhost:3065/profile/${post.User.profileImg}`}
+          src={`http://localhost:3065/profile/${info.profileImg}`}
           size="large"
           style={{ width: '30px', height: '30px', margin: '7px' }}
         />
