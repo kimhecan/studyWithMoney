@@ -15,16 +15,16 @@ const Main = () => {
       <div style={{ margin: '20px 20px', marginBottom: '100px' }}>
         <Carousel autoplay style={{ textAlign: 'center', height: '170px', lineHeight: '160px', background: '#364d79', overflow: 'hidden' }}>
           <div>
-            <h3 style={{ color: '#fff' }}>1</h3>
+            <h3 style={{ color: '#fff' }}>11</h3>
           </div>
           <div>
-            <h3 style={{ color: '#fff' }}>2</h3>
+            <h3 style={{ color: '#fff' }}>22</h3>
           </div>
           <div>
-            <h3 style={{ color: '#fff' }}>3</h3>
+            <h3 style={{ color: '#fff' }}>33</h3>
           </div>
           <div>
-            <h3 style={{ color: '#fff' }}>4</h3>
+            <h3 style={{ color: '#fff' }}>43</h3>
           </div>
         </Carousel>
       </div>
