@@ -3,15 +3,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Card, Avatar, Popover, Button } from 'antd';
 import { LikeOutlined, CommentOutlined, EllipsisOutlined, NotificationOutlined, EditOutlined, DeleteOutlined, LikeTwoTone, SmileTwoTone } from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import parseDate from '../functions/parseDate';
-import PostImages from './PostImages';
-import PostUpdate from './updateZoom/PostUpdate';
-import CommentForm from './CommentForm';
-import PostComment from './PostComment';
-import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post';
+import moment from 'moment';
+import PostImages from '../PostImages';
+import PostUpdate from '../updateZoom/PostUpdate';
+import CommentForm from '../CommentForm';
+import PostComment from '../PostComment';
+import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../../reducers/post';
+import { StyledCard, CardHeaderWrapper, CardHeader, DateWrapper } from './style';
+
+moment.locale('ko');
 
 const PostCard = ({ post }) => {
-  const { info } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [visible, setVisible] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -47,47 +50,45 @@ const PostCard = ({ post }) => {
   }, []);
 
   const onLike = useCallback(() => {
-    if (!info.id) {
+    if (!me.id) {
       return alert('로그인이 필요합니다.');
     }
     return dispatch({
       type: LIKE_POST_REQUEST,
       data: post.id,
     });
-  }, [info.id]);
+  }, [me.id]);
   const onUnlike = useCallback(() => {
-    if (!info.id) {
+    if (!me.id) {
       return alert('로그인이 필요합니다.');
     }
     return dispatch({
       type: UNLIKE_POST_REQUEST,
       data: post.id,
     });
-  }, [info.id]);
+  }, [me.id]);
 
-  const liked = post.Likers.find((v) => v.id === info.id);
+  const liked = post.Likers.find((v) => v.id === me.id);
 
   return (
     <>
-      <Card
-        style={{ marginTop: '100px', borderTopLeftRadius: '15px', borderTopRightRadius: '15px', boxShadow: '0px 0px 1px 0.05px gray' }}
+      <StyledCard
         hoverable
         bodyStyle={{ padding: '0px' }}
         cover={(
           <div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <div style={{ margin: '15px', flex: '1' }}>
+            <CardHeaderWrapper>
+              <CardHeader>
                 <Avatar
                   src={`http://localhost:3065/profile/${post.User.profileImg}`}
                   size="large"
-                  style={{ width: '50px', height: '50px' }}
                 />
-              </div>
-              <div style={{ flex: '15', marginTop: '12px' }}>
+              </CardHeader>
+              <DateWrapper>
                 <strong style={{ fontSize: '16px' }}>{post.User.nickname}</strong>
-                <p style={{ color: 'gray' }}>{parseDate(post.createdAt)}</p>
-              </div>
-            </div>
+                <p style={{ color: 'gray' }}>{moment(post.createdAt).format('YYYY.MM.DD')}</p>
+              </DateWrapper>
+            </CardHeaderWrapper>
             <p style={{ margin: '7px 15px', fontSize: '18px' }}>{post.content}</p>
             {post.Images.length > 0 && <PostImages alt="image" images={post.Images} />}
             {showUpdateForm && <PostUpdate post={post} onClose={onCloseUpdateForm} />}
@@ -110,7 +111,7 @@ const PostCard = ({ post }) => {
             <CommentOutlined key="comment" />
             <strong style={{ marginLeft: '5px' }}>댓글 달기</strong>
           </div>,
-          info.id === post.UserId
+          me.id === post.UserId
             ? (
               <Popover
                 key="more"

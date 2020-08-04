@@ -1,4 +1,4 @@
-import produce from 'immer';
+import produce from '../util/produce';
 
 export const initialState = {
   postInfos: [],
@@ -9,7 +9,7 @@ export const initialState = {
   addCommentMessage: null,
   addLikeMessage: null,
   deleteCommentMessage: null,
-  hasMorePosts: true,
+  hasMorePosts: false,
 };
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
@@ -61,11 +61,6 @@ export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
   data,
 });
-
-// export const addComment = (data) => ({
-//   type: ADD_COMMENT_REQUEST,
-//   data,
-// });
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {

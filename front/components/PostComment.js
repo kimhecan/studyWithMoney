@@ -6,13 +6,13 @@ import { EllipsisOutlined, DeleteOutlined } from '@ant-design/icons';
 import { DELETE_COMMENT_REQUEST } from '../reducers/post';
 
 const PostComment = ({ post, comment }) => {
-  const { info } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
   const [visibleComment, setVisibleComment] = useState(false);
   const dispatch = useDispatch();
 
   const onRemoveComment = (commentId) => {
     console.log(commentId, 'commentId');
-    if (!info.id) {
+    if (!me.id) {
       return alert('로그인이 필요합니다.');
     }
     console.log(post.id, '서버로 보낼때 post.id');
@@ -37,7 +37,7 @@ const PostComment = ({ post, comment }) => {
             <>
               <span style={{ backgroundColor: '#F2F3F5', padding: '7px', borderRadius: '10px' }}>{comment.content}</span>
               <div style={{ display: 'inline-block' }}>
-                {comment.User.id === info.id
+                {comment.User.id === me.id
                   && (
                     <Popover
                       content={<Button onClick={() => onRemoveComment(comment.id)}><DeleteOutlined />삭제</Button>}

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Cascader, Button } from 'antd';
-import { setContext } from 'redux-saga/effects';
 
 const Selection = () => {
   const [collage, setCollage] = useState();

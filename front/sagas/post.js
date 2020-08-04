@@ -1,4 +1,4 @@
-import { takeLatest, call, put, fork, all } from 'redux-saga/effects';
+import { takeLatest, call, put, fork, all, throttle } from 'redux-saga/effects';
 import axios from 'axios';
 import {
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
@@ -113,7 +113,7 @@ function* loadPosts(action) {
   }
 }
 function* watchLoadPost() {
-  yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
+  yield throttle(500, LOAD_POSTS_REQUEST, loadPosts);
 }
 //----------------------------------------------------------------------
 function deletePostAPI(data) { // Post delete하기

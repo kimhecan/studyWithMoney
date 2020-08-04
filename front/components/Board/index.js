@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { PageHeader } from 'antd';
-import PostForm from './PostForm';
-import PostCard from './PostCard';
-import { LOAD_POSTS_REQUEST, POST_RESET } from '../reducers/post';
+import PostForm from '../PostForm';
+import PostCard from '../PostCard';
+import { LOAD_POSTS_REQUEST, POST_RESET } from '../../reducers/post';
+import PageHeaderWrapper from './style';
 
 const Board = ({ category }) => {
   const { postInfos, hasMorePosts } = useSelector((state) => state.post);
@@ -24,6 +25,7 @@ const Board = ({ category }) => {
       setSubTitle('하냥이들의 동아리·학회 공간입니다');
     }
   }, []);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,7 +38,7 @@ const Board = ({ category }) => {
         category,
       },
     });
-  }, [boardTitle]);
+  }, []);
 
   useEffect(() => {
     function onScroll() {
@@ -60,13 +62,11 @@ const Board = ({ category }) => {
   }, [postInfos, hasMorePosts]);
   return (
     <>
-      <div>
-        <div style={{ margin: '10px 10%' }}>
-          <PageHeader className="site-page-header" title={boardTitle} subTitle={subTitle} />
-          <PostForm category={category} />
-          {postInfos && postInfos.map((post) => <PostCard key={post.id} post={post} />)}
-        </div>
-      </div>
+      <PageHeaderWrapper>
+        <PageHeader className="site-page-header" title={boardTitle} subTitle={subTitle} />
+        <PostForm category={category} />
+        {postInfos && postInfos.map((post) => <PostCard key={post.id} post={post} />)}
+      </PageHeaderWrapper>
     </>
   );
 };

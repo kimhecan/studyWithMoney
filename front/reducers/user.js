@@ -1,7 +1,7 @@
-import produce from 'immer';
+import produce from '../util/produce';
 
 export const initialState = {
-  info: null,
+  me: null,
   signUpMessage: null,
   logInMessage: null,
   loadUserMessage: null,
@@ -27,22 +27,12 @@ export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 export const RESET_SIGN_UP_MESSAGE = 'RESET_SIGN_UP_MESSAGE';
 export const RESET_LOG_IN_MESSAGE = 'RESET_LOG_IN_MESSAGE';
 
-export const loginRequestAction = (data) => ({
-  type: LOG_IN_REQUEST,
-  data,
-});
-
-export const joinRequestAction = (data) => ({
-  type: SIGN_UP_REQUEST,
-  data,
-});
-
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     case SIGN_UP_REQUEST:
       break;
     case SIGN_UP_SUCCESS:
-      draft.signUpMessage = action.data;
+      draft.signUpMessage = action.data ? action.data : null;
       break;
     case SIGN_UP_FAILURE:
       draft.signUpMessage = action.error;
@@ -50,7 +40,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case LOG_IN_REQUEST:
       break;
     case LOG_IN_SUCCESS:
-      draft.info = action.data;
+      draft.me = action.data;
       break;
     case LOG_IN_FAILURE:
       draft.logInMessage = action.error;
@@ -58,17 +48,17 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case LOG_OUT_REQUEST:
       break;
     case LOG_OUT_SUCCESS:
-      draft.info = {};
+      draft.me = {};
       break;
     case LOG_OUT_FAILURE:
       break;
     case LOAD_USER_REQUEST:
       break;
     case LOAD_USER_SUCCESS:
-      draft.info = action.data;
+      draft.me = action.data;
       break;
     case LOAD_USER_FAILURE:
-      draft.loadUserMessage = action.data;
+      draft.loadUserMessage = action.data ? action.data : null;
       break;
     case RESET_SIGN_UP_MESSAGE:
       draft.signUpMessage = null;

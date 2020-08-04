@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, TreeSelect, Select, Tooltip, Alert } from 'antd';
+import { Form, Input, Button, TreeSelect, Select, Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
-import { joinRequestAction, RESET_SIGN_UP_MESSAGE } from '../reducers/user';
+import { SIGN_UP_REQUEST, RESET_SIGN_UP_MESSAGE } from '../reducers/user';
 
 const { Option } = Select;
 const { TreeNode } = TreeSelect;
@@ -16,7 +16,6 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-// Component
 const Join = () => {
   const [mailTail, setMailTail] = useState('@google.com');
   const { signUpMessage } = useSelector((state) => state.user);
@@ -24,14 +23,17 @@ const Join = () => {
 
   const onSubmit = (values) => {
     console.log('Success:', values);
-    dispatch(joinRequestAction({
-      userId: values.id,
-      password: values.password,
-      nickname: values.nickname,
-      email: values.email + mailTail,
-      grade: parseInt(values.grade, 10),
-      department: values.department,
-    }));
+    dispatch({
+      type: SIGN_UP_REQUEST,
+      data: {
+        userId: values.id,
+        password: values.password,
+        nickname: values.nickname,
+        email: values.email + mailTail,
+        grade: parseInt(values.grade, 10),
+        department: values.department,
+      },
+    });
   };
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const Join = () => {
     }
   }, [signUpMessage]);
 
-  const onFinishFailed = (errorInfo) => {
+  const onSubmitFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -74,7 +76,7 @@ const Join = () => {
         <h2 style={{ color: 'gray', textAlign: 'center' }}>빠르고 쉽습니다</h2>
       </div>
       <div style={{ backgroundColor: 'white', width: '450px', height: '500px', position: 'absolute', top: '50%', left: '50%', marginTop: '-250px', marginLeft: '-225px', borderRadius: '10px' }}>
-        <Form {...layout} name="join" initialValues={{ remember: true }} onFinish={onSubmit} onFinishFailed={onFinishFailed} style={{ marginTop: '60px', marginRight: '70px' }}>
+        <Form {...layout} name="join" initialValues={{ remember: true }} onFinish={onSubmit} onFinishFailed={onSubmitFailed} style={{ marginTop: '60px', marginRight: '70px' }}>
           <Form.Item label="아이디" name="id" rules={[{ required: true, message: '아이디를 입력해 주세요!' }]}>
             <Input />
           </Form.Item>
@@ -114,11 +116,11 @@ const Join = () => {
               allowClear
               treeDefaultExpandAll
             >
-              <TreeNode value="software" title="소프트웨어대학">
+              <TreeNode value="software" title="소프트웨어대학" disabled>
                 <TreeNode value="소프트웨어학부" title={<b style={{ color: '#08c' }}>소프트웨어학부</b>} />
                 <TreeNode value="ICT융합학부" title={<b style={{ color: '#08c' }}>ICT융합학부</b>} />
               </TreeNode>
-              <TreeNode value="engineering" title="공과대학">
+              <TreeNode value="engineering" title="공과대학" disabled>
                 <TreeNode value="건축학부" title={<b style={{ color: '#08c' }}>건축학부</b>} />
                 <TreeNode value="건설환경공학과" title={<b style={{ color: '#08c' }}>건설환경공학과</b>} />
                 <TreeNode value="교통·물류공학과" title={<b style={{ color: '#08c' }}>교통·물류공학과</b>} />
@@ -132,7 +134,7 @@ const Join = () => {
                 <TreeNode value="국방정보공학과" title={<b style={{ color: '#08c' }}>국방정보공학과</b>} />
                 <TreeNode value="스마트융합공학부" title={<b style={{ color: '#08c' }}>스마트융합공학부</b>} />
               </TreeNode>
-              <TreeNode value="science" title="과학기술융합대학">
+              <TreeNode value="science" title="과학기술융합대학" disabled>
                 <TreeNode value="응용수학과" title={<b style={{ color: '#08c' }}>응용수학과</b>} />
                 <TreeNode value="응용물리학과" title={<b style={{ color: '#08c' }}>응용물리학과</b>} />
                 <TreeNode value="분자생명과학과" title={<b style={{ color: '#08c' }}>분자생명과학과</b>} />
@@ -140,24 +142,24 @@ const Join = () => {
                 <TreeNode value="해양융합공학과" title={<b style={{ color: '#08c' }}>해양융합공학과</b>} />
                 <TreeNode value="나노광전자학과" title={<b style={{ color: '#08c' }}>나노광전자학과</b>} />
               </TreeNode>
-              <TreeNode value="economic" title="경상대학">
+              <TreeNode value="economic" title="경상대학" disabled>
                 <TreeNode value="경제학부" title={<b style={{ color: '#08c' }}>경제학부</b>} />
                 <TreeNode value="경영학부" title={<b style={{ color: '#08c' }}>경영학부</b>} />
                 <TreeNode value="보험계리학과 " title={<b style={{ color: '#08c' }}>보험계리학과 </b>} />
                 <TreeNode value="회계세무학과" title={<b style={{ color: '#08c' }}>회계세무학과</b>} />
               </TreeNode>
-              <TreeNode value="media" title="언론정보대학">
+              <TreeNode value="media" title="언론정보대학" disabled>
                 <TreeNode value="광고홍보학과" title={<b style={{ color: '#08c' }}>광고홍보학과</b>} />
                 <TreeNode value="정보사회미디어학과" title={<b style={{ color: '#08c' }}>정보사회미디어학과</b>} />
               </TreeNode>
-              <TreeNode value="design" title="디자인대학">
+              <TreeNode value="design" title="디자인대학" disabled>
                 <TreeNode value="산업디자인학과" title={<b style={{ color: '#08c' }}>산업디자인학과</b>} />
                 <TreeNode value="영상디자인학과" title={<b style={{ color: '#08c' }}>영상디자인학과</b>} />
                 <TreeNode value="커뮤니케이션디자인학과" title={<b style={{ color: '#08c' }}>커뮤니케이션디자인학과</b>} />
                 <TreeNode value="서피스·인테리어디자인학과" title={<b style={{ color: '#08c' }}>서피스·인테리어디자인학과</b>} />
                 <TreeNode value="주얼리·패션디자인학과" title={<b style={{ color: '#08c' }}>주얼리·패션디자인학과</b>} />
               </TreeNode>
-              <TreeNode value="culture" title="국제문화대학">
+              <TreeNode value="culture" title="국제문화대학" disabled>
                 <TreeNode value="한국언어문학과" title={<b style={{ color: '#08c' }}>한국언어문학과</b>} />
                 <TreeNode value="문화인류학과" title={<b style={{ color: '#08c' }}>문화인류학과</b>} />
                 <TreeNode value="문화콘텐츠학과" title={<b style={{ color: '#08c' }}>문화콘텐츠학과</b>} />
@@ -166,12 +168,12 @@ const Join = () => {
                 <TreeNode value="영미언어·문화학과" title={<b style={{ color: '#08c' }}>영미언어·문화학과</b>} />
                 <TreeNode value="프랑스학과" title={<b style={{ color: '#08c' }}>프랑스학과</b>} />
               </TreeNode>
-              <TreeNode value="sport" title="예체능대학">
+              <TreeNode value="sport" title="예체능대학" disabled>
                 <TreeNode value="스포츠과학부 " title={<b style={{ color: '#08c' }}>스포츠과학부</b>} />
                 <TreeNode value="무용예술학과  " title={<b style={{ color: '#08c' }}>무용예술학과</b>} />
                 <TreeNode value="실용음악학과  " title={<b style={{ color: '#08c' }}>실용음악학과</b>} />
               </TreeNode>
-              <TreeNode value="pharmacy" title="약학대학">
+              <TreeNode value="pharmacy" title="약학대학" disabled>
                 <TreeNode value="약학과" title={<b style={{ color: '#08c' }}>약학과</b>} />
               </TreeNode>
             </TreeSelect>

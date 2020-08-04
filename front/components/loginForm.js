@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { Button, Form, Input, Card } from 'antd';
-import { loginRequestAction, RESET_LOG_IN_MESSAGE } from '../reducers/user';
+import { LOG_IN_REQUEST, RESET_LOG_IN_MESSAGE } from '../reducers/user';
 
 const layout = {
   labelCol: { span: 8 },
@@ -16,13 +16,6 @@ const LoginForm = () => {
   const { logInMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const onFinish = (values) => {
-    dispatch(loginRequestAction({
-      userId: values.id,
-      password: values.password,
-    }));
-  };
-
   useEffect(() => {
     if (logInMessage !== null) {
       alert(logInMessage);
@@ -32,7 +25,17 @@ const LoginForm = () => {
     }
   }, [logInMessage]);
 
-  const onFinishFailed = (errorInfo) => {
+  const onSubmit = (values) => {
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: {
+        userId: values.id,
+        password: values.password,
+      },
+    });
+  };
+
+  const onSubmitFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -43,7 +46,7 @@ const LoginForm = () => {
         hoverable
         cover={
           (
-            <Form {...layout} name="basic" onFinish={onFinish} onFinishFailed={onFinishFailed}>
+            <Form {...layout} name="basic" onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
               <Form.Item label="아이디" name="id" rules={[{ required: true, message: '아이디를 입력해 주세요!' }]}>
                 <Input />
               </Form.Item>

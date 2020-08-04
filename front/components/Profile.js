@@ -1,15 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Row, Col, Divider, List, Card } from 'antd';
-import AppLayout from '../components/Applayout';
+import { Row, Col, Divider, List } from 'antd';
 
 const Profile = () => {
-  const { info } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
 
-  const infoData = [['아이디', info.userId], ['이메일', info.email], ['닉네임', info.nickname], ['학과', info.department]];
-  const PostData = [['질문 수', 10], ['답변 수', 20], ['해결 수:', 30]];
+  const infoData = [['아이디', me.userId], ['이메일', me.email], ['닉네임', me.nickname], ['학과', me.department]];
+  const PostData = [['게시글 수', me.Posts.length]];
+
   return (
-    <AppLayout>
+    <>
       <div className="site-card-wrapper">
         <Row gutter={10} style={{ marginTop: '20px', marginLeft: '20px' }}>
           <Col span={12}>
@@ -40,7 +40,7 @@ const Profile = () => {
           </Col>
         </Row>
       </div>
-    </AppLayout>
+    </>
   );
 };
 

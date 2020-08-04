@@ -1,4 +1,4 @@
-import { takeLatest, call, put, fork, all } from 'redux-saga/effects';
+import { takeLatest, call, put, fork, all, throttle } from 'redux-saga/effects';
 import axios from 'axios';
 import {
   SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE,
@@ -7,6 +7,8 @@ import {
   LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE,
 } from '../reducers/user';
 
+//---------------------------------------------------------------
+
 function signUpAPI(data) { // 가입하기
   return axios.post('/user', data);
 }
@@ -14,7 +16,6 @@ function signUpAPI(data) { // 가입하기
 function* signUp(action) {
   try {
     const result = yield call(signUpAPI, action.data);
-    console.log(result.data, 'signUpdata');
     yield put({
       type: SIGN_UP_SUCCESS,
       data: result.data,
@@ -40,7 +41,6 @@ function LogInAPI(data) { // 로그인하기
 function* LogIn(action) {
   try {
     const result = yield call(LogInAPI, action.data);
-    console.log(result, '로그인정보');
     yield put({
       type: LOG_IN_SUCCESS,
       data: result.data,
@@ -90,7 +90,6 @@ function LoadUserAPI() { // 유저정보 불러오기
 function* LoadUser() {
   try {
     const result = yield call(LoadUserAPI);
-    console.log(result.data, '유저정보불러오기');
     yield put({
       type: LOAD_USER_SUCCESS,
       data: result.data,
