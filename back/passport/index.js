@@ -3,7 +3,7 @@ const local = require('./local');
 const { User } = require('../models');
 
 module.exports = () => {
-  passport.serializeUser((user, done) => { // 서버에 [{id:1, cookie: 'asb}] 저장시켜줌
+  passport.serializeUser((user, done) => { // 서버에 [{id:1, cookie: asb}] 저장시켜줌
     done(null, user.id)
   });
 

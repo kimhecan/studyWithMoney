@@ -1,23 +1,28 @@
-module.exports = (sequelize, DataTypes) => {
-  const Post = sequelize.define('Post', {
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    category: {
-      type: DataTypes.STRING(10),
-      allowNull: false,
-    },
-  }, {
-    charset: 'utf8mb4',
-    collate: 'utf8mb4_general_ci' //한글 저장//이모티콘저장
-  });
+const DataTypes = require('sequelize');
+const { Model } = DataTypes;
 
-  Post.associate = (db) => {
+module.exports = class Post extends Model {
+  static init(sequelize) {
+    return super.init({
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      category: {
+        type: DataTypes.STRING(10),
+        allowNull: false,
+      },
+    }, {
+      modelName: 'Post',
+      charset: 'utf8',
+      collate: 'utf8_general_ci',
+      sequelize,
+    })
+  }
+  static associate(db) {
     db.Post.belongsTo(db.User); // posts에 userId 추가됨
     db.Post.belongsToMany(db.User, { through: 'Like', as: 'Likers' }) // post.addLikers, post.removeLikers
     db.Post.hasMany(db.Comment);
     db.Post.hasMany(db.Image);
-  };
-  return Post;
+  }
 }

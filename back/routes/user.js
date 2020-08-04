@@ -6,26 +6,34 @@ const { User, Post } = require('../models');
 
 const router = express.Router();
 
+const findById = async id => {
+  const accountInfo = await User.findOne({ where: { userId: id } });
+  return accountInfo;
+}
+
+const findByNickname = async nickname => {
+  const accountInfo = await User.findOne({ where: { nickname: nickname } });
+  return accountInfo;
+}
+
 
 router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/ => 회원가입하기
   try {
-    const overlapUserId = await User.findOne({ //아이디 중복확인
-      where: {
-        userId: req.body.userId
-      }
-    });
-    if (overlapUserId) {
+    let accountInfo = await findById(req.body.userId);
+    console.log(accountInfo, 'accountInfo');
+
+    if (accountInfo) {
       return res.status(403).send('이미 존재하는 아이디 입니다.');
     }
-    const overlapNickname = await User.findOne({ //아이디 중복확인
-      where: {
-        nickname: req.body.nickname
-      }
-    });
-    if (overlapNickname) {
+
+    accountInfo = await findByNickname(req.body.nickname);
+
+    if (accountInfo) {
       return res.status(403).send('이미 존재하는 닉네임 입니다.');
     }
+
     const hasgedPassword = await bcrypt.hash(req.body.password, 10);
+
     await User.create({
       userId: req.body.userId,
       password: hasgedPassword,
@@ -35,6 +43,7 @@ router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/ => �
       department: req.body.department,
       profileImg: 'default.png'
     });
+
     res.status(201).send('가입이 완료되었습니다!');
   } catch (e) {
     console.error(e);
@@ -51,6 +60,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => { // POST /login/ => �
     if (info) {
       return res.status(401).send(info.reason);
     }
+
     return req.login(user, async (loginErr) => {
       if (loginErr) {
         console.error(loginErr);
@@ -97,6 +107,7 @@ router.get('/', async (req, res, next) => { // loaduser
 })
 
 router.post('/logout', isLoggedIn, (req, res) => {  // POST /logout/ => 로그아웃하기
+  console.log('dddddddd');
   req.logout();
   req.session.destroy();
   res.send('ok');
