@@ -5,7 +5,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const passport = require('passport');
-const http = require('http');
+const hpp = require('hpp');
 const helmet = require('helmet');
 const path = require('path');
 const db = require('./models');
@@ -17,7 +17,7 @@ const initExpress = () => {
 
   if (process.env.NODE_ENV === 'production') {
     app.use(morgan('combined'));
-    app.use(http());
+    app.use(hpp());
     app.use(helmet());
   } else {
     app.use(morgan('dev'));
