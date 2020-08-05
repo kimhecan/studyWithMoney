@@ -5,9 +5,9 @@ import { Menu, Col, Row } from 'antd';
 import { AppstoreOutlined, HomeOutlined, UserOutlined, ContainerOutlined, BulbOutlined, LogoutOutlined } from '@ant-design/icons';
 import { LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../../reducers/user';
 import Main from '../main';
-import Profile from '../profile';
-import Problem from '../problem';
-import Concept from '../concept';
+import Profile from '../Profile';
+import Problem from '../Problem';
+import Concept from '../Concept';
 import Board from '../Board';
 import { ImageWrapper, HeaderText, Img, Sponsored } from './style';
 
