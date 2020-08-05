@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import PostImages from '../postImages';
 import PostUpdate from '../updateZoom/PostUpdate';
-import CommentForm from '../commentForm';
-import PostComment from '../postComment';
+import CommentForm from '../CommentForm';
+import PostComment from '../PostComment';
 import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../../reducers/post';
 import { StyledCard, CardHeaderWrapper, CardHeader, DateWrapper } from './style';
 
