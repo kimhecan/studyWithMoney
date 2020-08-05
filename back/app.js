@@ -11,7 +11,7 @@ const passportConfig = require('./passport');
 
 const initExpress = () => {
   const app = express();
-  const PORT = 3065;
+  const PORT = 80;
   app.use(morgan('dev'));
   app.use(cors({
     origin: 'http://localhost:3000',
