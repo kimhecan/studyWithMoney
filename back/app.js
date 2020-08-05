@@ -5,6 +5,8 @@ const cors = require('cors');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const passport = require('passport');
+const http = require('http');
+const helmet = require('helmet');
 const path = require('path');
 const db = require('./models');
 const passportConfig = require('./passport');
@@ -12,9 +14,17 @@ const passportConfig = require('./passport');
 const initExpress = () => {
   const app = express();
   const PORT = 80;
-  app.use(morgan('dev'));
+
+  if (process.env.NODE_ENV === 'production') {
+    app.use(morgan('combined'));
+    app.use(http());
+    app.use(helmet());
+  } else {
+    app.use(morgan('dev'));
+  }
+
   app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'studyWithMoney.com'],
     credentials: true,
   }));
 
