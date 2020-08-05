@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { END } from 'redux-saga';
 import Applayout from '../components/Applayout';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/loginForm';
 import { LOAD_USER_REQUEST } from '../reducers/user';
 import wrapper from '../store/configure';
 
