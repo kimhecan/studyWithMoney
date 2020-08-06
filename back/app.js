@@ -24,7 +24,7 @@ const initExpress = () => {
   }
 
   app.use(cors({
-    origin: ['http://localhost:3000', 'studyWithMoney.com'],
+    origin: ['http://localhost:3000', 'studyWithMoney.com', 'http://13.125.224.241'],
     credentials: true,
   }));
 
