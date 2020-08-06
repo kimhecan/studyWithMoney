@@ -6,6 +6,7 @@ import Applayout from '../components/Applayout';
 import LoginForm from '../components/loginForm';
 import { LOAD_USER_REQUEST } from '../reducers/user';
 import wrapper from '../store/configure';
+import { backUrl } from '../config/config';
 
 // 프론트랑 브라우저 둘다 실행
 const Index = () => {
@@ -16,7 +17,7 @@ const Index = () => {
       {me?.id == null
         ? (
           <div style={{ position: 'absolute', left: '50%', top: '50%', marginTop: '-270px', marginLeft: '-250px' }}>
-            <img src="http://localhost:3065/profile/logo.png" alt="log" style={{ width: '500px' }} />
+            <img src={`${backUrl}/profile/logo.png`} alt="log" style={{ width: '500px' }} />
             <br /><br /><br />
             <LoginForm />
           </div>

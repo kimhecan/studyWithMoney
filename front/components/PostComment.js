@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Comment, Popover, Button, Avatar } from 'antd';
 import { EllipsisOutlined, DeleteOutlined } from '@ant-design/icons';
 import { DELETE_COMMENT_REQUEST } from '../reducers/post';
+import { backUrl } from '../config/config';
 
 const PostComment = ({ post, comment }) => {
   const { me } = useSelector((state) => state.user);
@@ -32,7 +33,7 @@ const PostComment = ({ post, comment }) => {
         <Comment
           style={{ backgroundColor: 'white' }}
           author={comment.User.nickname}
-          avatar={<Avatar src={`http://localhost:3065/profile/${comment.User.profileImg}`} style={{ marginLeft: '7px' }} />}
+          avatar={<Avatar src={`${backUrl}/profile/${comment.User.profileImg}`} style={{ marginLeft: '7px' }} />}
           content={(
             <>
               <span style={{ backgroundColor: '#F2F3F5', padding: '7px', borderRadius: '10px' }}>{comment.content}</span>

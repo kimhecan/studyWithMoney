@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { PlusOutlined } from '@ant-design/icons';
 import ImagesZoom from './ImageZoom';
+import { backUrl } from '../config/config';
 
 const PostImages = ({ images }) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -17,7 +18,7 @@ const PostImages = ({ images }) => {
   if (images.length === 1) {
     return (
       <>
-        <img role="presentation" style={{ width: '100%', height: '500px', overflow: 'hidden' }} src={`http://localhost:3065/post/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+        <img role="presentation" style={{ width: '100%', height: '500px', overflow: 'hidden' }} src={`${backUrl}/post/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
@@ -26,9 +27,9 @@ const PostImages = ({ images }) => {
   if (images.length === 2) {
     return (
       <>
-        <img role="presentation" style={{ width: '49.5%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+        <img role="presentation" style={{ width: '49.5%', display: 'inline-block' }} src={`${backUrl}/post/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
         <p style={{ width: '1%', display: 'inline-block' }} />
-        <img role="presentation" style={{ width: '49.5%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[1].src}`} alt={images[1].src} onClick={onZoom} />
+        <img role="presentation" style={{ width: '49.5%', display: 'inline-block' }} src={`${backUrl}/post/${images[1].src}`} alt={images[1].src} onClick={onZoom} />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
@@ -38,12 +39,12 @@ const PostImages = ({ images }) => {
       <>
         <div>
           <div style={{ marginBottom: '3px', height: '300px', overflow: 'hidden' }}>
-            <img role="presentation" style={{ maxWidth: '100%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+            <img role="presentation" style={{ maxWidth: '100%', display: 'inline-block' }} src={`${backUrl}/post/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
           </div>
           <div style={{ height: '300px', overflow: 'hidden' }}>
-            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[1].src}`} alt={images[1].src} onClick={onZoom} />
+            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`${backUrl}/post/${images[1].src}`} alt={images[1].src} onClick={onZoom} />
             <p style={{ width: '0.6%', display: 'inline-block' }} />
-            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[2].src}`} alt={images[2].src} onClick={onZoom} />
+            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`${backUrl}/post/${images[2].src}`} alt={images[2].src} onClick={onZoom} />
           </div>
         </div>
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
@@ -55,14 +56,14 @@ const PostImages = ({ images }) => {
       <>
         <div>
           <div style={{ marginBottom: '3px', height: '300px', overflow: 'hidden' }}>
-            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`${backUrl}/post/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
             <p style={{ width: '0.6%', display: 'inline-block' }} />
-            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[1].src}`} alt={images[1].src} onClick={onZoom} />
+            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`${backUrl}/post/${images[1].src}`} alt={images[1].src} onClick={onZoom} />
           </div>
           <div style={{ height: '300px', overflow: 'hidden' }}>
-            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[2].src}`} alt={images[2].src} onClick={onZoom} />
+            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`${backUrl}/post/${images[2].src}`} alt={images[2].src} onClick={onZoom} />
             <p style={{ width: '0.6%', display: 'inline-block' }} />
-            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[3].src}`} alt={images[3].src} onClick={onZoom} />
+            <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`${backUrl}/post/${images[3].src}`} alt={images[3].src} onClick={onZoom} />
           </div>
         </div>
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
@@ -74,14 +75,14 @@ const PostImages = ({ images }) => {
     <>
       <div>
         <div style={{ marginBottom: '3px', height: '300px', overflow: 'hidden' }}>
-          <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+          <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`${backUrl}/post/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
           <p style={{ width: '0.6%', display: 'inline-block' }} />
-          <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[1].src}`} alt={images[1].src} onClick={onZoom} />
+          <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`${backUrl}/post/${images[1].src}`} alt={images[1].src} onClick={onZoom} />
         </div>
         <div style={{ height: '300px', overflow: 'hidden' }}>
-          <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[2].src}`} alt={images[2].src} onClick={onZoom} />
+          <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`${backUrl}/post/${images[2].src}`} alt={images[2].src} onClick={onZoom} />
           <p style={{ width: '0.6%', display: 'inline-block' }} />
-          <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`http://localhost:3065/post/${images[3].src}`} alt={images[3].src} onClick={onZoom} />
+          <img role="presentation" style={{ width: '49.7%', display: 'inline-block' }} src={`${backUrl}/post/${images[3].src}`} alt={images[3].src} onClick={onZoom} />
         </div>
       </div>
       <div role="presentation" style={{ display: 'inline-block', width: '50%', textAlign: 'center', verticalAlign: 'middle' }} onClick={onZoom}>

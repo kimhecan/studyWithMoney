@@ -10,6 +10,7 @@ import Problem from '../Problem';
 import Concept from '../Concept';
 import Board from '../Board';
 import { ImageWrapper, HeaderText, Img, Sponsored } from './style';
+import { backUrl } from '../../config/config';
 
 const { SubMenu } = Menu;
 
@@ -52,7 +53,7 @@ const AppLayout = () => {
 
               >
                 <ImageWrapper>
-                  <Img src="http://localhost:3065//profile/logo.png" alt="img" />
+                  <Img src={`${backUrl}/profile/logo.png`} alt="img" />
                 </ImageWrapper>
                 <Menu.Item key="main" icon={<HomeOutlined />}>
                   Home

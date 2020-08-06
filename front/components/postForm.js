@@ -5,6 +5,7 @@ import { Form, Input, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST } from '../reducers/post';
 import useInput from '../hooks/useInput';
+import { backUrl } from '../config/config';
 
 const { TextArea } = Input;
 
@@ -74,7 +75,7 @@ const PostForm = ({ category }) => {
         <div style={{ float: 'right' }}>
           {imagePaths.map((v, i) => (
             <div key={v} style={{ width: '250px', borderRadius: '5px', border: '1px solid #c0c0c0', padding: '5px' }}>
-              <img src={`http://localhost:3065/post/${v}`} style={{ width: '30px' }} alt={v} />
+              <img src={`${backUrl}/post/${v}`} style={{ width: '30px' }} alt={v} />
               <DeleteOutlined onClick={onRemoveImage(i)} style={{ marginLeft: '130px' }} />
             </div>
           ))}

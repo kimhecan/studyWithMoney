@@ -10,6 +10,7 @@ import CommentForm from '../CommentForm';
 import PostComment from '../PostComment';
 import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../../reducers/post';
 import { StyledCard, CardHeaderWrapper, CardHeader, DateWrapper } from './style';
+import { backUrl } from '../../config/config';
 
 moment.locale('ko');
 
@@ -80,7 +81,7 @@ const PostCard = ({ post }) => {
             <CardHeaderWrapper>
               <CardHeader>
                 <Avatar
-                  src={`http://localhost:3065/profile/${post.User.profileImg}`}
+                  src={`${backUrl}/profile/${post.User.profileImg}`}
                   size="large"
                 />
               </CardHeader>

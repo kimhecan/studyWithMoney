@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Form, Input, Avatar } from 'antd';
 import useInput from '../hooks/useInput';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
+import { backUrl } from '../config/config';
 
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const CommentForm = ({ post }) => {
     <>
       <Form onFinish={onSubmitComment} style={{ backgroundColor: 'white' }}>
         <Avatar
-          src={`http://localhost:3065/profile/${me.profileImg}`}
+          src={`${backUrl}/profile/${me.profileImg}`}
           size="large"
           style={{ width: '30px', height: '30px', margin: '7px' }}
         />
