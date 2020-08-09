@@ -1,4 +1,4 @@
-import { takeLatest, call, put, fork, all, throttle } from 'redux-saga/effects';
+import { takeLatest, call, put, fork, all } from 'redux-saga/effects';
 import axios from 'axios';
 import {
   SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE,
@@ -95,6 +95,7 @@ function* LoadUser() {
       data: result.data,
     });
   } catch (e) {
+    console.log(e.response);
     console.error(e);
     yield put({
       type: LOAD_USER_FAILURE,

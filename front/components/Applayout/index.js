@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Menu, Col, Row } from 'antd';
 import { AppstoreOutlined, HomeOutlined, UserOutlined, ContainerOutlined, BulbOutlined, LogoutOutlined } from '@ant-design/icons';
 import { LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../../reducers/user';
-import Main from '../main';
+import Main from '../Main';
 import Profile from '../Profile';
 import Problem from '../Problem';
 import Concept from '../Concept';

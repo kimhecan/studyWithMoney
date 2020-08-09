@@ -7,6 +7,7 @@ export const initialState = {
   addPostMessage: null,
   updatePostMessage: null,
   addCommentMessage: null,
+  addReCommentMessage: null,
   addLikeMessage: null,
   deleteCommentMessage: null,
   hasMorePosts: false,
@@ -39,6 +40,10 @@ export const UPLOAD_UPDATE_IMAGES_FAILURE = 'UPLOAD__UPDATE_IMAGES_FAILURE';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
+export const ADD_RECOMMENT_REQUEST = 'ADD_RECOMMENT_REQUEST';
+export const ADD_RECOMMENT_SUCCESS = 'ADD_RECOMMENT_SUCCESS';
+export const ADD_RECOMMENT_FAILURE = 'ADD_RECOMMENT_FAILURE';
 
 export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
@@ -121,6 +126,17 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case ADD_COMMENT_FAILURE:
       draft.addCommentMessage = action.data;
       break;
+    case ADD_RECOMMENT_REQUEST:
+      break;
+    case ADD_RECOMMENT_SUCCESS:
+      const postForAddReComment = draft.postInfos.find((v) => v.id === action.data.PostId);
+      const commentForAddReComment = postForAddReComment.Comments.find((v) => v.id === action.data.id);
+      console.log(action.data);
+      commentForAddReComment.ReComments.push(action.data.ReComments[0]);
+      break;
+    case ADD_RECOMMENT_FAILURE:
+      draft.addReCommentMessage = action.data;
+      break;
     case LIKE_POST_REQUEST:
       break;
     case LIKE_POST_SUCCESS:
@@ -142,9 +158,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case DELETE_COMMENT_REQUEST:
       break;
     case DELETE_COMMENT_SUCCESS:
-      console.log(action.data.PostId);
       const postForDelComment = draft.postInfos.find((v) => v.id === action.data.PostId);
-      console.log(postForDelComment);
       postForDelComment.Comments = postForDelComment.Comments.filter((v) => v.id !== action.data.CommentId);
       break;
     case DELETE_COMMENT_FAILURE:

@@ -4,8 +4,8 @@ import { Avatar, Popover, Button } from 'antd';
 import { LikeOutlined, CommentOutlined, EllipsisOutlined, NotificationOutlined, EditOutlined, DeleteOutlined, LikeTwoTone, SmileTwoTone } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import PostImages from '../postImages';
-import PostUpdate from '../updateZoom/postUpdate';
+import PostImages from '../PostImages';
+import PostUpdate from '../UpdateZoom/postUpdate';
 import CommentForm from '../CommentForm';
 import PostComment from '../PostComment';
 import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../../reducers/post';
@@ -140,7 +140,7 @@ const PostCard = ({ post }) => {
       />
       {commentFormOpened && (
         <div>
-          <CommentForm post={post} />
+          <CommentForm post={post} isRecomment={false} />
           {post.Comments.length > 0 && post.Comments.map((v) => <PostComment key={v.id} post={post} comment={v} />)}
         </div>
       )}

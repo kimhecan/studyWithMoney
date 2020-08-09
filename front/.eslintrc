@@ -34,6 +34,7 @@
         "react/jsx-props-no-spreading": "off",
         "object-property-newline": "off",
         "camelcase": "off",
-        "no-case-declarations": "off"
+        "no-case-declarations": "off",
+        "click-events-have-key-events": "off"
     }
 }
