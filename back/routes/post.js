@@ -3,7 +3,8 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { isLoggedIn } = require('./middleware');
-const { Post, User, Image, Comment } = require('../models');
+const { Post, User, Image, Comment, ReComment } = require('../models');
+
 
 const router = express.Router();
 
@@ -167,10 +168,49 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { //commen
     const fullComment = await Comment.findOne({
       where: { id: comment.id },
       include: [{
+        model: ReComment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname', 'profileImg'],
+        }]
+      }, {
         model: User,
         attributes: ['id', 'nickname', 'profileImg'],
       }],
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC'],
+      [ReComment, 'createdAt', 'DESC'],
+      ]
+    })
+    res.status(201).json(fullComment);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+})
+
+router.post('/recomment/:commentId', isLoggedIn, async (req, res, next) => { //recomment
+  try {
+    await ReComment.create({
+      content: req.body.content,
+      CommentId: parseInt(req.params.commentId),
+      UserId: req.user.id,
+    });
+    const fullComment = await Comment.findOne({
+      where: { id: parseInt(req.params.commentId, 10) },
+      include: [{
+        model: ReComment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname', 'profileImg'],
+        }]
+      }, {
+        model: User,
+        attributes: ['id', 'nickname', 'profileImg'],
+      }],
+      order: [
+        ['createdAt', 'DESC'],
+        [ReComment, 'createdAt', 'DESC'],
+      ]
     })
     res.status(201).json(fullComment);
   } catch (e) {

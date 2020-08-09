@@ -1,7 +1,7 @@
 const DataTypes = require('sequelize');
 const { Model } = DataTypes;
 
-module.exports = class Comment extends Model {
+module.exports = class ReComment extends Model {
   static init(sequelize) {
     return super.init({
       content: {
@@ -9,15 +9,14 @@ module.exports = class Comment extends Model {
         allowNull: false,
       }
     }, {
-      modelName: 'Comment',
+      modelName: 'ReComment',
       charset: 'utf8',
       collate: 'utf8_general_ci',
       sequelize,
     })
   }
   static associate(db) {
-    db.Comment.belongsTo(db.User);
-    db.Comment.belongsTo(db.Post);
-    db.Comment.hasMany(db.ReComment);
+    db.ReComment.belongsTo(db.Comment);
+    db.ReComment.belongsTo(db.User);
   }
 }

@@ -15,7 +15,6 @@ module.exports = () => {
       if (!user) {
         return done(null, false, { reason: '가입하지 않은 아이디이거나, 잘못된 비밀번호 입니다.' });
       }
-      console.log('뭐지..');
       const result = await bcrypt.compare(password, user.password);
       if (result) {
         return done(null, user);

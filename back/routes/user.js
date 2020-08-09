@@ -98,7 +98,7 @@ router.get('/', async (req, res, next) => { // loaduser
       })
       res.status(200).json(userWithoutPassword);
     } else {
-      res.status(401).json(null)
+      res.status(401).send('loadUser에 실패하였습니다.')
     }
   } catch (err) {
     console.error(err);
