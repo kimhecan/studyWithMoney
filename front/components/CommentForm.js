@@ -6,7 +6,7 @@ import useInput from '../hooks/useInput';
 import { ADD_COMMENT_REQUEST, ADD_RECOMMENT_REQUEST } from '../reducers/post';
 import { backUrl } from '../config/config';
 
-const CommentForm = ({ post, comment, isRecomment }) => {
+const CommentForm = ({ post, parentComment, isRecomment }) => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
@@ -16,7 +16,7 @@ const CommentForm = ({ post, comment, isRecomment }) => {
     if (isRecomment) {
       dispatch({
         type: ADD_RECOMMENT_REQUEST,
-        data: { content: commentText, commentId: comment.id },
+        data: { content: commentText, commentId: parentComment.id, postId: post.id },
       });
     } else {
       dispatch({
@@ -26,7 +26,8 @@ const CommentForm = ({ post, comment, isRecomment }) => {
     }
   }, [commentText, me.id]);
 
-  const marginLeft = isRecomment ? '30px' : '0px';
+  const marginLeft = isRecomment ? '40px' : '0px';
+  const widthHeight = isRecomment ? '25px' : '30px';
   return (
     <>
       <Form onFinish={onSubmitComment} style={{ backgroundColor: 'white' }}>
@@ -34,7 +35,7 @@ const CommentForm = ({ post, comment, isRecomment }) => {
           <Avatar
             src={`${backUrl}/profile/${me.profileImg}`}
             size="large"
-            style={{ width: '30px', height: '30px', margin: '7px' }}
+            style={{ width: `${widthHeight}`, height: `${widthHeight}`, margin: '7px' }}
           />
           <Input
             value={commentText}

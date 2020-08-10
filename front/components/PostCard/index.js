@@ -9,7 +9,7 @@ import PostUpdate from '../UpdateZoom/postUpdate';
 import CommentForm from '../CommentForm';
 import PostComment from '../PostComment';
 import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../../reducers/post';
-import { StyledCard, CardHeaderWrapper, CardHeader, DateWrapper } from './style';
+import { StyledCard, CardHeaderWrapper, CardHeader, DateWrapper, StyledSpan } from './style';
 import { backUrl } from '../../config/config';
 
 moment.locale('ko');
@@ -97,7 +97,7 @@ const PostCard = ({ post }) => {
               <div>
                 {post.Likers.length > 0 && <SmileTwoTone style={{ marginLeft: '10px', display: 'inline-block' }} />}
                 {post.Likers.length > 0 && <p style={{ marginLeft: '10px', marginBottom: '10px', display: 'inline-block' }}>{post.Likers.length}명</p>}
-                {post.Comments.length > 0 && <span onClick={onToggleComment} style={{ float: 'right', marginRight: '10px', color: 'gray' }}>댓글 {post.Comments.length}개</span>}
+                {post.Comments.length > 0 && <StyledSpan onClick={onToggleComment}>댓글 {post.Comments.length}개</StyledSpan>}
               </div>
             )}
           </div>
@@ -140,7 +140,7 @@ const PostCard = ({ post }) => {
       />
       {commentFormOpened && (
         <div>
-          <CommentForm post={post} isRecomment={false} />
+          <CommentForm post={post} parentComment={null} isRecomment={false} />
           {post.Comments.length > 0 && post.Comments.map((v) => <PostComment key={v.id} post={post} comment={v} />)}
         </div>
       )}

@@ -13,8 +13,8 @@ const PostComment = ({ post, comment }) => {
   return (
     <>
       <Remark post={post} comment={comment} isRecomment={false} ReCommentVisible={ReCommentVisible} />
-      {visibleReComment && comment.ReComments && comment.ReComments.map((v) => <Remark post={post} comment={v} isRecomment={true} />)}
-      {visibleReComment && <CommentForm post={post} comment={comment} isRecomment={true} />}
+      {visibleReComment && comment.ReComments && comment.ReComments.map((v) => <Remark key={v.id} post={post} comment={v} isRecomment={true} ReCommentVisible={ReCommentVisible} />)}
+      {visibleReComment && <CommentForm post={post} parentComment={comment} isRecomment={true} />}
     </>
   );
 };

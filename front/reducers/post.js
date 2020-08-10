@@ -57,6 +57,10 @@ export const DELETE_COMMENT_REQUEST = 'DELETE_COMMENT_REQUEST';
 export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS';
 export const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE';
 
+export const DELETE_RECOMMENT_REQUEST = 'DELETE_RECOMMENT_REQUEST';
+export const DELETE_RECOMMENT_SUCCESS = 'DELETE_RECOMMENT_SUCCESS';
+export const DELETE_RECOMMENT_FAILURE = 'DELETE_RECOMMENT_FAILURE';
+
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 export const POST_RESET = 'POST_RESET';
 export const REMOVE_UPDATE_IMAGE = 'REMOVE_UPDATE_IMAGE';
@@ -131,7 +135,6 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case ADD_RECOMMENT_SUCCESS:
       const postForAddReComment = draft.postInfos.find((v) => v.id === action.data.PostId);
       const commentForAddReComment = postForAddReComment.Comments.find((v) => v.id === action.data.id);
-      console.log(action.data);
       commentForAddReComment.ReComments.push(action.data.ReComments[0]);
       break;
     case ADD_RECOMMENT_FAILURE:
@@ -162,6 +165,16 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       postForDelComment.Comments = postForDelComment.Comments.filter((v) => v.id !== action.data.CommentId);
       break;
     case DELETE_COMMENT_FAILURE:
+      draft.deleteCommentMessage = action.data;
+      break;
+    case DELETE_RECOMMENT_REQUEST:
+      break;
+    case DELETE_RECOMMENT_SUCCESS:
+      const postForDelReComment = draft.postInfos.find((v) => v.id === action.data.PostId);
+      const commentForDelReComment = postForDelReComment.Comments.find((v) => v.id === action.data.CommentId);
+      commentForDelReComment.ReComments = commentForDelReComment.ReComments.filter((v) => v.id !== action.data.ReCommentId);
+      break;
+    case DELETE_RECOMMENT_FAILURE:
       draft.deleteCommentMessage = action.data;
       break;
     case REMOVE_IMAGE:

@@ -12,6 +12,7 @@ import {
   LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LIKE_POST_FAILURE,
   UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
   DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE,
+  DELETE_RECOMMENT_REQUEST, DELETE_RECOMMENT_SUCCESS, DELETE_RECOMMENT_FAILURE,
 } from '../reducers/post';
 
 function AddPostAPI(data) { // 포스트 추가하기
@@ -279,6 +280,31 @@ function* deleteComment(action) {
 function* watchDeleteComment() {
   yield takeLatest(DELETE_COMMENT_REQUEST, deleteComment);
 }
+
+//-------------------------------------------------------------------------
+function deleteReCommentAPI(data) { // 대댓글 삭제
+  return axios.delete(`/post/${data.postId}/recomment/${data.reCommentId}`);
+}
+
+function* deleteReComment(action) {
+  try {
+    const result = yield call(deleteReCommentAPI, action.data);
+    console.log(result.data);
+    yield put({
+      type: DELETE_RECOMMENT_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: DELETE_RECOMMENT_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+function* watchDeleteReComment() {
+  yield takeLatest(DELETE_RECOMMENT_REQUEST, deleteReComment);
+}
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
@@ -292,5 +318,6 @@ export default function* postSaga() {
     fork(watchLikePost),
     fork(watchUnlikePost),
     fork(watchDeleteComment),
+    fork(watchDeleteReComment),
   ]);
 }

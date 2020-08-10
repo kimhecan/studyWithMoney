@@ -21,4 +21,12 @@ export const DateWrapper = styled.div`
   margin-top: 12px;
 `;
 
-// export const 
+export const StyledSpan = styled.span`
+  float: right; 
+  margin-right: 10px; 
+  color: gray;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`;
