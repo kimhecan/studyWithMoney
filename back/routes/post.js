@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const { isLoggedIn } = require('./middleware');
 const { Post, User, Image, Comment, ReComment } = require('../models');
+const { findAll } = require('../models/post');
 
 
 const router = express.Router();
@@ -89,6 +90,13 @@ router.delete('/:postId', isLoggedIn, async (req, res, next) => { // 포스트 �
         PostId: parseInt(req.params.postId, 10),
       }
     });
+    const comment = await Comment.findAll({ where: { PostId: parseInt(req.params.postId, 10), } });
+    if (comment.length > 0) {
+      comment.forEach(async (v) => {
+        await ReComment.destroy({ where: { CommentId: parseInt(v.id, 10), } })
+      })
+      await Comment.destroy({ where: { PostId: parseInt(req.params.postId, 10), } });
+    }
 
     await Post.destroy({
       where: {
@@ -96,6 +104,8 @@ router.delete('/:postId', isLoggedIn, async (req, res, next) => { // 포스트 �
         UserId: req.user.id,
       },
     });
+
+
     res.status(200).json({ PostId: parseInt(req.params.postId, 10) })
   } catch (e) {
     console.error(e);
@@ -259,6 +269,28 @@ router.delete('/:postId/comment/:commentId', isLoggedIn, async (req, res, next) 
       PostId: parseInt(req.params.postId, 10),
       CommentId: parseInt(req.params.commentId, 10),
       UserId: parseInt(req.user.id, 10),
+    })
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+})
+
+router.delete('/:postId/recomment/:reCommentId', isLoggedIn, async (req, res, next) => { //댓글 삭제
+  try {
+    const reComment = await ReComment.findOne({
+      where: {
+        id: parseInt(req.params.reCommentId, 10),
+      }
+    });
+    if (!reComment) return res.status(403).send('대댓글이 존재하지 않습니다.');
+
+    await ReComment.destroy({ where: { id: parseInt(req.params.reCommentId, 10) } })
+    res.json({
+      ReCommentId: parseInt(req.params.reCommentId, 10),
+      CommentId: parseInt(reComment.CommentId, 10),
+      UserId: parseInt(req.user.id, 10),
+      PostId: parseInt(req.params.postId, 10),
     })
   } catch (e) {
     console.error(e);
