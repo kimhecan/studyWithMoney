@@ -8,7 +8,7 @@ import { LOAD_POSTS_REQUEST, POST_RESET } from '../../reducers/post';
 import PageHeaderWrapper from './style';
 
 const Board = ({ category }) => {
-  const { postInfos, hasMorePosts } = useSelector((state) => state.post);
+  const { boardPosts, hasMorePosts } = useSelector((state) => state.post);
 
   const [boardTitle, setBoardTitle] = useState('');
   const [subTitle, setSubTitle] = useState('');
@@ -44,7 +44,7 @@ const Board = ({ category }) => {
     function onScroll() {
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if (hasMorePosts) {
-          const lastId = postInfos[postInfos.length - 1]?.id;
+          const lastId = boardPosts[boardPosts.length - 1]?.id;
           dispatch({
             type: LOAD_POSTS_REQUEST,
             data: {
@@ -59,13 +59,13 @@ const Board = ({ category }) => {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [postInfos, hasMorePosts]);
+  }, [boardPosts, hasMorePosts]);
   return (
     <>
       <PageHeaderWrapper>
         <PageHeader className="site-page-header" title={boardTitle} subTitle={subTitle} />
         <PostForm category={category} />
-        {postInfos && postInfos.map((post) => <PostCard key={post.id} post={post} />)}
+        {boardPosts && boardPosts.map((post) => <PostCard key={post.id} post={post} />)}
       </PageHeaderWrapper>
     </>
   );

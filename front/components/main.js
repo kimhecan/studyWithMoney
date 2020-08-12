@@ -1,18 +1,28 @@
-import React from 'react';
-import { Carousel, List, Typography, Divider } from 'antd';
-
-const data = [
-  'Racing car sprays burning fuel into crowd.',
-  'Japanese princess to wed commoner.',
-  'Australian walks 100km after outback crash.',
-  'Man charged over missing wedding girl.',
-  'Los Angeles battles huge wildfires.',
-];
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Carousel, List } from 'antd';
+import { POST_RESET, LOAD_POSTS_REQUEST } from '../reducers/post';
+import date from '../util/date';
 
 const Main = () => {
+  const { boardPosts } = useSelector((state) => state.post);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: POST_RESET,
+    });
+    dispatch({
+      type: LOAD_POSTS_REQUEST,
+      data: {
+        category: 'all',
+      },
+    });
+  }, []);
+
   return (
     <>
-      <div style={{ margin: '20px 20px', marginBottom: '100px' }}>
+      <div style={{ margin: '20px 20px', marginBottom: '50px' }}>
         <Carousel autoplay style={{ textAlign: 'center', height: '170px', lineHeight: '160px', background: '#364d79', overflow: 'hidden' }}>
           <div>
             <h3 style={{ color: '#fff' }}>11</h3>
@@ -28,37 +38,71 @@ const Main = () => {
           </div>
         </Carousel>
       </div>
-      <Divider orientation="left" style={{ fontWeight: 'bold', margin: '10px 20px' }}>최근 질문</Divider>
-      <div style={{ display: 'flex', flexDirection: 'row', margin: '20px 20px' }}>
-        <List
-          style={{ flex: '2' }}
-          size="small"
-          header={<div>최근 질문</div>}
-          bordered
-          dataSource={data}
-          renderItem={(item) => (
-            <List.Item>
-              <Typography.Text mark>[ITEM]</Typography.Text> {item}
-            </List.Item>
-          )}
-        />
-        <img style={{ flex: '1', height: '230px' }} src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" alt="aa" />
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div style={{ margin: '20px 20px', flex: 1 }}>
+          <List
+            size="small"
+            style={{ backgroundColor: 'white' }}
+            header={<div style={{ height: '30px', color: '#364d79', fontWeight: 'bold' }}>자유게시판</div>}
+            bordered
+            dataSource={boardPosts.filter((v) => v.category === 'freeBoard').map((v) => v)}
+            renderItem={(item) => (
+              <>
+                <List.Item>
+                  <span style={{ color: 'black' }}>{item.content}</span>
+                  <span style={{ fontSize: '10px' }}>{date(item.createdAt)}</span>
+                </List.Item>
+              </>
+            )}
+          />
+        </div>
+        <div style={{ margin: '20px 20px', flex: 1 }}>
+          <List
+            size="small"
+            style={{ backgroundColor: 'white' }}
+            header={<div style={{ height: '30px', color: '#364d79', fontWeight: 'bold' }}>정보게시판</div>}
+            bordered
+            dataSource={boardPosts.filter((v) => v.category === 'infoBoard').map((v) => v)}
+            renderItem={(item) => (
+              <List.Item>
+                <span style={{ color: 'black' }}>{item.content}</span>
+                <span style={{ fontSize: '10px' }}>{date(item.createdAt)}</span>
+              </List.Item>
+            )}
+          />
+        </div>
       </div>
-      <Divider orientation="left" style={{ fontWeight: 'bold', marginTop: '80px', margin: '10px 20px' }}>인기 게시글</Divider>
-      <div style={{ display: 'flex', flexDirection: 'row', margin: '20px 20px' }}>
-        <img style={{ flex: '1', height: '230px' }} src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" alt="aa" />
-        <List
-          style={{ flex: '2' }}
-          size="small"
-          header={<div>인기 게시글</div>}
-          bordered
-          dataSource={data}
-          renderItem={(item) => (
-            <List.Item>
-              <Typography.Text mark>[ITEM]</Typography.Text> {item}
-            </List.Item>
-          )}
-        />
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div style={{ margin: '20px 20px', flex: 1 }}>
+          <List
+            size="small"
+            style={{ backgroundColor: 'white' }}
+            header={<div style={{ height: '30px', color: '#364d79', fontWeight: 'bold' }}>동아리'학회</div>}
+            bordered
+            dataSource={boardPosts.filter((v) => v.category === 'clubBoard').map((v) => v)}
+            renderItem={(item) => (
+              <List.Item>
+                <span style={{ color: 'black' }}>{item.content}</span>
+                <span style={{ fontSize: '10px' }}>{date(item.createdAt)}</span>
+              </List.Item>
+            )}
+          />
+        </div>
+        <div style={{ margin: '20px 20px', flex: 1 }}>
+          <List
+            size="small"
+            style={{ backgroundColor: 'white' }}
+            header={<div style={{ height: '30px', color: '#364d79', fontWeight: 'bold' }}>질문</div>}
+            bordered
+            dataSource={boardPosts.filter((v) => v.category === 'freeBoard').map((v) => v)}
+            renderItem={(item) => (
+              <List.Item>
+                <span style={{ color: 'black' }}>{item.content}</span>
+                <span style={{ fontSize: '10px' }}>{date(item.createdAt)}</span>
+              </List.Item>
+            )}
+          />
+        </div>
       </div>
     </>
   );

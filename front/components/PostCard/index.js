@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Avatar, Popover, Button } from 'antd';
 import { LikeOutlined, CommentOutlined, EllipsisOutlined, NotificationOutlined, EditOutlined, DeleteOutlined, LikeTwoTone, SmileTwoTone } from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import PostImages from '../PostImages';
 import PostUpdate from '../UpdateZoom/postUpdate';
 import CommentForm from '../CommentForm';
@@ -11,8 +10,7 @@ import PostComment from '../PostComment';
 import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../../reducers/post';
 import { StyledCard, CardHeaderWrapper, CardHeader, DateWrapper, StyledSpan } from './style';
 import { backUrl } from '../../config/config';
-
-moment.locale('ko');
+import date from '../../util/date';
 
 const PostCard = ({ post }) => {
   const { me } = useSelector((state) => state.user);
@@ -87,7 +85,7 @@ const PostCard = ({ post }) => {
               </CardHeader>
               <DateWrapper>
                 <strong style={{ fontSize: '16px' }}>{post.User.nickname}</strong>
-                <p style={{ color: 'gray' }}>{moment(post.createdAt).format('YYYY.MM.DD')}</p>
+                <p style={{ color: 'gray' }}>{date(post.createdAt)}</p>
               </DateWrapper>
             </CardHeaderWrapper>
             <p style={{ margin: '7px 15px', fontSize: '18px' }}>{post.content}</p>

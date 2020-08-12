@@ -1,7 +1,7 @@
 import produce from '../util/produce';
 
 export const initialState = {
-  postInfos: [],
+  boardPosts: [],
   imagePaths: [],
   updateImagePaths: [],
   addPostMessage: null,
@@ -76,7 +76,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case ADD_POST_REQUEST:
       break;
     case ADD_POST_SUCCESS:
-      draft.postInfos.unshift(action.data);
+      draft.boardPosts.unshift(action.data);
       draft.imagePaths = [];
       break;
     case ADD_POST_FAILURE:
@@ -85,7 +85,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case LOAD_POSTS_REQUEST:
       break;
     case LOAD_POSTS_SUCCESS:
-      draft.postInfos = draft.postInfos.concat(action.data);
+      draft.boardPosts = draft.boardPosts.concat(action.data);
       draft.hasMorePosts = action.data.length === 10;
       break;
     case LOAD_POSTS_FAILURE:
@@ -93,7 +93,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case UPDATE_POST_REQUEST:
       break;
     case UPDATE_POST_SUCCESS:
-      const post = draft.postInfos.find((v) => v.id === action.data.id);
+      const post = draft.boardPosts.find((v) => v.id === action.data.id);
       post.content = action.data.content;
       post.Images = action.data.Images;
       draft.updatePostMessage = '수정되었습니다';
@@ -103,7 +103,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case DELETE_POST_REQUEST:
       break;
     case DELETE_POST_SUCCESS:
-      draft.postInfos = draft.postInfos.filter((v) => v.id !== action.data.PostId);
+      draft.boardPosts = draft.boardPosts.filter((v) => v.id !== action.data.PostId);
       break;
     case DELETE_POST_FAILURE:
       break;
@@ -124,7 +124,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case ADD_COMMENT_REQUEST:
       break;
     case ADD_COMMENT_SUCCESS:
-      const postForAddComment = draft.postInfos.find((v) => v.id === action.data.PostId);
+      const postForAddComment = draft.boardPosts.find((v) => v.id === action.data.PostId);
       postForAddComment.Comments.unshift(action.data);
       break;
     case ADD_COMMENT_FAILURE:
@@ -133,9 +133,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case ADD_RECOMMENT_REQUEST:
       break;
     case ADD_RECOMMENT_SUCCESS:
-      const postForAddReComment = draft.postInfos.find((v) => v.id === action.data.PostId);
-      const commentForAddReComment = postForAddReComment.Comments.find((v) => v.id === action.data.id);
-      commentForAddReComment.ReComments.push(action.data.ReComments[0]);
+      const postForAddReCmt = draft.boardPosts.find((v) => v.id === action.data.PostId);
+      const cmtForAddReCmt = postForAddReCmt.Comments.find((v) => v.id === action.data.id);
+      cmtForAddReCmt.ReComments.push(action.data.ReComments[0]);
       break;
     case ADD_RECOMMENT_FAILURE:
       draft.addReCommentMessage = action.data;
@@ -143,7 +143,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case LIKE_POST_REQUEST:
       break;
     case LIKE_POST_SUCCESS:
-      const postForLike = draft.postInfos.find((v) => v.id === action.data.PostId);
+      const postForLike = draft.boardPosts.find((v) => v.id === action.data.PostId);
       postForLike.Likers.push({ id: action.data.UserId });
       break;
     case LIKE_POST_FAILURE:
@@ -152,7 +152,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case UNLIKE_POST_REQUEST:
       break;
     case UNLIKE_POST_SUCCESS:
-      const postforUnlike = draft.postInfos.find((v) => v.id === action.data.PostId);
+      const postforUnlike = draft.boardPosts.find((v) => v.id === action.data.PostId);
       postforUnlike.Likers = postforUnlike.Likers.filter((v) => v.id !== action.data.UserId);
       break;
     case UNLIKE_POST_FAILURE:
@@ -161,8 +161,8 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case DELETE_COMMENT_REQUEST:
       break;
     case DELETE_COMMENT_SUCCESS:
-      const postForDelComment = draft.postInfos.find((v) => v.id === action.data.PostId);
-      postForDelComment.Comments = postForDelComment.Comments.filter((v) => v.id !== action.data.CommentId);
+      const postForDelCmt = draft.boardPosts.find((v) => v.id === action.data.PostId);
+      postForDelCmt.Comments = postForDelCmt.Comments.filter((v) => v.id !== action.data.CommentId);
       break;
     case DELETE_COMMENT_FAILURE:
       draft.deleteCommentMessage = action.data;
@@ -170,9 +170,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case DELETE_RECOMMENT_REQUEST:
       break;
     case DELETE_RECOMMENT_SUCCESS:
-      const postForDelReComment = draft.postInfos.find((v) => v.id === action.data.PostId);
-      const commentForDelReComment = postForDelReComment.Comments.find((v) => v.id === action.data.CommentId);
-      commentForDelReComment.ReComments = commentForDelReComment.ReComments.filter((v) => v.id !== action.data.ReCommentId);
+      const postForDelReCmt = draft.boardPosts.find((v) => v.id === action.data.PostId);
+      const cmtForDelReCmt = postForDelReCmt.Comments.find((v) => v.id === action.data.CommentId);
+      cmtForDelReCmt.ReComments = cmtForDelReCmt.ReComments.filter((v) => v.id !== action.data.ReCommentId);
       break;
     case DELETE_RECOMMENT_FAILURE:
       draft.deleteCommentMessage = action.data;
@@ -184,7 +184,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.updateImagePaths = draft.updateImagePaths.filter((v, i) => i !== action.data);
       break;
     case POST_RESET:
-      draft.postInfos = [];
+      draft.boardPosts = [];
       draft.imagePaths = [];
       break;
     case UPDATE_DEfAULT_IMAGES:
