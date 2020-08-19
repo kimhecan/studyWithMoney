@@ -60,8 +60,8 @@ router.post('/login', isNotLoggedIn, (req, res, next) => { // POST /login/ => �
     if (info) {
       return res.status(401).send(info.reason);
     }
-
-    return req.login(user, async (loginErr) => {
+    // passport serialize가 실행됨 => 쿠키랑 아이디 쌍
+    return req.login(user, async (loginErr) => { // passport login을 해줌 이때 session이 사용됨
       if (loginErr) {
         console.error(loginErr);
         return next(loginErr);

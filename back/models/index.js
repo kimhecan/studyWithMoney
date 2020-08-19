@@ -17,7 +17,6 @@ db.User = user;
 db.Post = post;
 db.Image = image;
 
-
 Object.keys(db).forEach(modelName => {
   db[modelName].init(sequelize);
 });

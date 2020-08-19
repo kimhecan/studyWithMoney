@@ -47,6 +47,7 @@ const initExpress = () => {
   app.use('/user', require('./routes/user'));
   app.use('/post', require('./routes/post'));
   app.use('/posts', require('./routes/posts'));
+  app.use('/subjects', require('./routes/subjects'));
 
   app.listen(PORT, () => {
     console.log(`Express server listening on port ${PORT}`);
