@@ -10,6 +10,7 @@ const App = ({ Component }) => (
     <Head>
       <meta charSet="utf-8" />
       <title>TIL</title>
+      <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet" />
     </Head>
     <Component />
   </>

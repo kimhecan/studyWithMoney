@@ -116,11 +116,11 @@ const Join = () => {
               allowClear
               treeDefaultExpandAll
             >
-              <TreeNode value="software" title="소프트웨어대학" disabled>
+              <TreeNode value="software" title="소프트웨어융합대학" disabled>
                 <TreeNode value="소프트웨어학부" title={<b style={{ color: '#08c' }}>소프트웨어학부</b>} />
                 <TreeNode value="ICT융합학부" title={<b style={{ color: '#08c' }}>ICT융합학부</b>} />
               </TreeNode>
-              <TreeNode value="engineering" title="공과대학" disabled>
+              <TreeNode value="engineering" title="공학대학" disabled>
                 <TreeNode value="건축학부" title={<b style={{ color: '#08c' }}>건축학부</b>} />
                 <TreeNode value="건설환경공학과" title={<b style={{ color: '#08c' }}>건설환경공학과</b>} />
                 <TreeNode value="교통·물류공학과" title={<b style={{ color: '#08c' }}>교통·물류공학과</b>} />

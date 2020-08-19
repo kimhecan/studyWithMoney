@@ -6,7 +6,7 @@ import { AppstoreOutlined, HomeOutlined, UserOutlined, ContainerOutlined, BulbOu
 import { LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../../reducers/user';
 import Main from '../Main';
 import Profile from '../Profile';
-import Problem from '../Problem';
+import Subject from '../Subject';
 import Concept from '../Concept';
 import Board from '../Board';
 import { ImageWrapper, HeaderText, Img, Sponsored } from './style';
@@ -62,7 +62,7 @@ const AppLayout = () => {
                   {me && me.nickname}님
                 </Menu.Item>
                 <SubMenu key="sub1" icon={<BulbOutlined />} title="공부하냥">
-                  <Menu.Item key="problem">문제풀이</Menu.Item>
+                  <Menu.Item key="subject">문제풀이</Menu.Item>
                   <Menu.Item key="concept">개념이해</Menu.Item>
                 </SubMenu>
                 <SubMenu key="board" icon={<AppstoreOutlined />} title="게시판">
@@ -86,7 +86,7 @@ const AppLayout = () => {
                 <Col span={20}>
                   {current === 'main' && <Main />}
                   {current === 'profile' && <Profile />}
-                  {current === 'problem' && <Problem />}
+                  {current === 'subject' && <Subject />}
                   {current === 'concept' && <Concept />}
                   {current === 'freeBoard' && <Board category={current} />}
                   {current === 'infoBoard' && <Board category={current} />}
