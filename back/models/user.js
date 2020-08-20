@@ -48,5 +48,6 @@ module.exports = class User extends Model {
     db.User.hasMany(db.Comment);
     db.User.hasMany(db.ReComment);
     db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' });
+    db.User.belongsToMany(db.Subject, { through: 'Star', as: 'Stared' });
   }
 };

@@ -4,7 +4,6 @@ const path = require('path');
 const fs = require('fs');
 const { isLoggedIn } = require('./middleware');
 const { Post, User, Image, Comment, ReComment } = require('../models');
-const { findAll } = require('../models/post');
 
 
 const router = express.Router();
@@ -233,7 +232,6 @@ router.patch('/:postId/like', isLoggedIn, async (req, res, next) => { //좋아�
   try {
     const post = await Post.findOne({ where: { id: parseInt(req.params.postId) } });
     if (!post) return res.status(403).send('게시글이 존재하지 않습니다.');
-
     await post.addLikers(req.user.id);
     res.json({ PostId: post.id, UserId: req.user.id });
   } catch (e) {

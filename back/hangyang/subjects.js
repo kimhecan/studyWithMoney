@@ -50,24 +50,26 @@ const Subjectsfunc = async (collage, department, grade, subject) => {
 
     let subjects = [];
     let tempObj = {};
-    subjectList.forEach((v) => {
-      tempObj.grade = v.banGrade;
-      tempObj.banSosokNm = v.banSosokNm;
-      tempObj.isuGbNm = v.isuGbNm;
-      tempObj.yungyukNm = v.yungyukNm;
-      tempObj.suupNo = v.suupNo;
-      tempObj.haksuNo = v.haksuNo;
-      tempObj.gwamokNm = v.gwamokNm;
-      tempObj.gyogangsaNms = v.gyogangsaNms;
-      tempObj.suupTimes = v.suupTimes;
-      tempObj.hakjeom = v.hakjeom;
-      tempObj.jehanInwon = v.jehanInwon;
-      subjects.push(tempObj);
+
+    for (let i = 0; i < subjectList.length; i++) {
+      if (i !== 0 && tempObj.suupNo == subjectList[i].suupNo) {
+        continue;
+      }
       tempObj = {};
-    });
-
+      tempObj.grade = subjectList[i].banGrade;
+      tempObj.banSosokNm = subjectList[i].banSosokNm;
+      tempObj.isuGbNm = subjectList[i].isuGbNm;
+      tempObj.yungyukNm = subjectList[i].yungyukNm;
+      tempObj.suupNo = subjectList[i].suupNo;
+      tempObj.haksuNo = subjectList[i].haksuNo;
+      tempObj.gwamokNm = subjectList[i].gwamokNm;
+      tempObj.gyogangsaNms = subjectList[i].gyogangsaNms;
+      tempObj.suupTimes = subjectList[i].suupTimes;
+      tempObj.hakjeom = subjectList[i].hakjeom;
+      tempObj.jehanInwon = subjectList[i].jehanInwon;
+      subjects.push(tempObj);
+    }
     return subjects;
-
 
   } catch (e) {
     console.log('error발생');
