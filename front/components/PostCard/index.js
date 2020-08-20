@@ -38,7 +38,7 @@ const PostCard = ({ post }) => {
     if (!post) {
       return alert('로그인이 필요합니다.');
     }
-    if (confirm("게시물을 삭제하시겠습니까?") === false) return;
+    if (confirm('게시물을 삭제하시겠습니까?') === false) return;
     return dispatch({
       type: DELETE_POST_REQUEST,
       data: post.id,

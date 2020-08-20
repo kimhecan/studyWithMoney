@@ -4,7 +4,8 @@ import { Card } from 'antd';
 export const StyledCard = styled(Card)`
   border: 1px solid lightgray;
   margin: 40px 50px; 
-  padding: 20px;
+  border-radius: 20px;
+  padding: 15px;
   font-size: 15px;
   font-family: 'Do Hyeon', sans-serif;
   transition: all ease 0.5s 0s;
