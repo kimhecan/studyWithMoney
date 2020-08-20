@@ -2,20 +2,30 @@
 
 studyWithMoney is community for hanyang university student
 
+CRUD Post, Comment, ReComment
+
+Like to Post
+
+searching subject and add, delete favorite subject
+
 ## Installation
+
+you need to install mysql database
+
+and create .env file to config COOKIE_SECRET and DATABASE_PASSWORD in back folder
 
 Use the package manager [npm](https://nodejs.org/en/) to install
 
 ```bash
 cd front
 npm i
-npm start
+npx next
 ```
 
 ```bash
 cd back
 npm i
-npm start
+node app
 ```
 
 ## Contributing
