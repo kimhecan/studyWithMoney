@@ -3,8 +3,13 @@ import { Comment, Avatar } from 'antd';
 
 export const StyledComment = styled(Comment)`
   background-color: white;
+  max-width: 700px;
+  margin: auto auto;
   .ant-comment-inner {
     padding: 5px;
+  }
+  .ant-comment-content-author-name {
+    margin-left: 2px;
   }
 `;
 

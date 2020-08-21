@@ -61,7 +61,7 @@ const PostForm = ({ category }) => {
 
   return (
     <>
-      <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed} encType="multipart/form-data">
+      <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed} encType="multipart/form-data" style={{ maxWidth: '700px', margin: 'auto auto' }}>
         <TextArea name="content" value={content} onChange={onChangeContent} rows={4} placeholder="여기를 눌러서 글을 작성할 수 있습니다" required />
         <div style={{ display: 'flex', flexDirection: 'row', marginTop: '10px' }}>
           <div style={{ flex: 1 }}>

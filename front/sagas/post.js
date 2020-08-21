@@ -13,6 +13,7 @@ import {
   UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
   DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE,
   DELETE_RECOMMENT_REQUEST, DELETE_RECOMMENT_SUCCESS, DELETE_RECOMMENT_FAILURE,
+  REPORT_POST_REQUEST, REPORT_POST_SUCCESS, REPORT_POST_FAILURE,
 } from '../reducers/post';
 
 function AddPostAPI(data) { // 포스트 추가하기
@@ -305,6 +306,31 @@ function* deleteReComment(action) {
 function* watchDeleteReComment() {
   yield takeLatest(DELETE_RECOMMENT_REQUEST, deleteReComment);
 }
+
+//---------------------------------------------------------------------------
+function reportPostAPI(data) { // 포스트 신고
+  return axios.post('/post/report', data);
+}
+
+function* reportPost(action) {
+  try {
+    const result = yield call(reportPostAPI, action.data);
+    console.log(result.data);
+    yield put({
+      type: REPORT_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: REPORT_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+function* watchReportPost() {
+  yield takeLatest(REPORT_POST_REQUEST, reportPost);
+}
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
@@ -319,5 +345,6 @@ export default function* postSaga() {
     fork(watchUnlikePost),
     fork(watchDeleteComment),
     fork(watchDeleteReComment),
+    fork(watchReportPost),
   ]);
 }

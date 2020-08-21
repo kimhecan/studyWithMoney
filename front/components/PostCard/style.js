@@ -2,8 +2,10 @@ import styled from 'styled-components';
 import { Card } from 'antd';
 
 export const StyledCard = styled(Card)`
+  margin: auto auto;
   margin-top: 100px;
   box-shadow: 0px 0px 1px 0.05px gray;
+  max-width: 700px;
 `;
 
 export const CardHeaderWrapper = styled.div`

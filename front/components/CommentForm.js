@@ -30,7 +30,7 @@ const CommentForm = ({ post, parentComment, isRecomment }) => {
   const widthHeight = isRecomment ? '25px' : '30px';
   return (
     <>
-      <Form onFinish={onSubmitComment} style={{ backgroundColor: 'white' }}>
+      <Form onFinish={onSubmitComment} style={{ backgroundColor: 'white', maxWidth: '700px', margin: 'auto auto' }}>
         <div style={{ backgroundColor: 'white', marginLeft: `${marginLeft}` }}>
           <Avatar
             src={`${backUrl}/profile/${me.profileImg}`}

@@ -7,6 +7,7 @@ import PostImages from '../PostImages';
 import UpdateZoom from '../UpdateZoom';
 import CommentForm from '../CommentForm';
 import PostComment from '../PostComment';
+import Report from '../Report';
 import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../../reducers/post';
 import { StyledCard, CardHeaderWrapper, CardHeader, DateWrapper, StyledSpan } from './style';
 import { backUrl } from '../../config/config';
@@ -17,6 +18,7 @@ const PostCard = ({ post }) => {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [visible, setVisible] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
+  const [showReport, setShowReport] = useState(false);
   const dispatch = useDispatch();
 
   const handleVisibleChange = (v) => {
@@ -69,8 +71,8 @@ const PostCard = ({ post }) => {
   }, [me.id]);
 
   const onReport = useCallback(() => {
-
-  }, [])
+    setShowReport(!showReport);
+  }, [showReport]);
 
   const liked = post.Likers.find((v) => v.id === me.id);
 
@@ -141,6 +143,7 @@ const PostCard = ({ post }) => {
             ),
         ]}
       />
+      {showReport && <Report post={post} onReport={onReport} />}
       {commentFormOpened && (
         <div>
           <CommentForm post={post} parentComment={null} isRecomment={false} />

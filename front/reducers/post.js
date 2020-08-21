@@ -11,6 +11,7 @@ export const initialState = {
   addLikeMessage: null,
   deleteCommentMessage: null,
   hasMorePosts: false,
+  reportMessage: null,
 };
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
@@ -61,15 +62,15 @@ export const DELETE_RECOMMENT_REQUEST = 'DELETE_RECOMMENT_REQUEST';
 export const DELETE_RECOMMENT_SUCCESS = 'DELETE_RECOMMENT_SUCCESS';
 export const DELETE_RECOMMENT_FAILURE = 'DELETE_RECOMMENT_FAILURE';
 
+export const REPORT_POST_REQUEST = 'REPORT_POST_REQUEST';
+export const REPORT_POST_SUCCESS = 'REPORT_POST_SUCCESS';
+export const REPORT_POST_FAILURE = 'REPORT_POST_FAILURE';
+
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 export const POST_RESET = 'POST_RESET';
 export const REMOVE_UPDATE_IMAGE = 'REMOVE_UPDATE_IMAGE';
 export const UPDATE_DEfAULT_IMAGES = 'UPDATE_DEfAULT_IMAGES';
-
-export const addPost = (data) => ({
-  type: ADD_POST_REQUEST,
-  data,
-});
+export const RESET_REPORT_MESSAGE = 'RESET_REPORT_MESSAGE';
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
@@ -177,6 +178,13 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case DELETE_RECOMMENT_FAILURE:
       draft.deleteCommentMessage = action.data;
       break;
+    case REPORT_POST_REQUEST:
+      break;
+    case REPORT_POST_SUCCESS:
+      draft.reportMessage = action.data;
+      break;
+    case REPORT_POST_FAILURE:
+      break;
     case REMOVE_IMAGE:
       draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
       break;
@@ -189,6 +197,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case UPDATE_DEfAULT_IMAGES:
       draft.updateImagePaths = action.data;
+      break;
+    case RESET_REPORT_MESSAGE:
+      draft.reportMessage = null;
       break;
     default:
       break;
