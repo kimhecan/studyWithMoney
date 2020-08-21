@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { isLoggedIn } = require('./middleware');
-const { Post, User, Image, Comment, ReComment } = require('../models');
+const { Post, User, Image, Comment, ReComment, Report } = require('../models');
 
 
 const router = express.Router();
@@ -290,6 +290,23 @@ router.delete('/:postId/recomment/:reCommentId', isLoggedIn, async (req, res, ne
       UserId: parseInt(req.user.id, 10),
       PostId: parseInt(req.params.postId, 10),
     })
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+})
+
+router.post('/report', isLoggedIn, async (req, res, next) => { //report
+  try {
+    const report = await Report.create({
+      category: req.body.values.radio,
+      content: req.body.values.content,
+      reporter: req.user.id,
+    });
+    console.log(report);
+    await report.addReported(req.body.post.id);
+
+    res.status(201).send('신고접수가 완료되었습니다.')
   } catch (e) {
     console.error(e);
     next(e);

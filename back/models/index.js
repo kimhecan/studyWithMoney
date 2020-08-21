@@ -5,6 +5,7 @@ const image = require('./image');
 const post = require('./post');
 const user = require('./user');
 const subject = require('./subject');
+const report = require('./report');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
@@ -18,6 +19,7 @@ db.User = user;
 db.Post = post;
 db.Image = image;
 db.Subject = subject;
+db.Report = report;
 
 Object.keys(db).forEach(modelName => {
   db[modelName].init(sequelize);
