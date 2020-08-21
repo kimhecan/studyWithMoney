@@ -4,7 +4,7 @@ import { Avatar, Popover, Button } from 'antd';
 import { LikeOutlined, CommentOutlined, EllipsisOutlined, NotificationOutlined, EditOutlined, DeleteOutlined, LikeTwoTone, SmileTwoTone } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import PostImages from '../PostImages';
-import PostUpdate from '../UpdateZoom/postUpdate';
+import UpdateZoom from '../UpdateZoom';
 import CommentForm from '../CommentForm';
 import PostComment from '../PostComment';
 import { DELETE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../../reducers/post';
@@ -68,6 +68,10 @@ const PostCard = ({ post }) => {
     });
   }, [me.id]);
 
+  const onReport = useCallback(() => {
+
+  }, [])
+
   const liked = post.Likers.find((v) => v.id === me.id);
 
   return (
@@ -89,11 +93,11 @@ const PostCard = ({ post }) => {
                 <p style={{ color: 'gray' }}>{date(post.createdAt)}</p>
               </DateWrapper>
             </CardHeaderWrapper>
-            <p style={{ margin: '7px 15px', fontSize: '18px' }}>{post.content}</p>
+            <p style={{ margin: '7px 15px', fontSize: '15px', color: 'black' }}>{post.content}</p>
             {post.Images.length > 0 && <PostImages alt="image" images={post.Images} />}
-            {showUpdateForm && <PostUpdate post={post} onClose={onCloseUpdateForm} />}
-            {(post.Likers.length > 0 || post.Comments.length) > 0 && (
-              <div>
+            {showUpdateForm && <UpdateZoom post={post} onClose={onCloseUpdateForm} />}
+            {(post.Likers.length > 0 || post.Comments.length || true) > 0 && (
+              <div style={{ minHeight: '30px' }}>
                 {post.Likers.length > 0 && <SmileTwoTone style={{ marginLeft: '10px', display: 'inline-block' }} />}
                 {post.Likers.length > 0 && <p style={{ marginLeft: '10px', marginBottom: '10px', display: 'inline-block' }}>{post.Likers.length}명</p>}
                 {post.Comments.length > 0 && <StyledSpan onClick={onToggleComment}>댓글 {post.Comments.length}개</StyledSpan>}
@@ -129,7 +133,7 @@ const PostCard = ({ post }) => {
               </Popover>
             )
             : (
-              <div>
+              <div onClick={onReport}>
                 <NotificationOutlined key="report" />
                 <strong style={{ marginLeft: '5px' }}>신고하기</strong>
               </div>

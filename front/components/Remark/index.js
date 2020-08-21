@@ -48,7 +48,7 @@ const Remark = ({ post, comment, isRecomment, ReCommentVisible }) => {
         }
         content={(
           <>
-            <span style={{ backgroundColor: '#F2F3F5', padding: '7px', borderRadius: '10px' }}>{comment.content}</span>
+            <span style={{ backgroundColor: '#F2F3F5', padding: '7px', borderRadius: '10px', color: 'black' }}>{comment.content}</span>
             <div style={{ display: 'inline-block' }}>
               {comment.User.id === me.id
                 && (
