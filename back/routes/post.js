@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const multerS3 = require('multer-s3');
+const AWS = require('aws-sdk');
 const { isLoggedIn } = require('./middleware');
 const { Post, User, Image, Comment, ReComment, Report } = require('../models');
 
@@ -15,18 +17,21 @@ try {
   fs.mkdirSync('imgs/post');
 }
 
+AWS.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: 'us-east-1',
+
+})
 const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, 'imgs/post');
-    },
-    filename(req, file, done) {
-      const ext = path.extname(file.originalname);
-      const basename = path.basename(file.originalname, ext);
-      done(null, basename + '_' + new Date().getTime() + ext);
-    },
+  storage: multerS3({
+    s3: new AWS.S3(),
+    bucket: 'studywithmoney-s3',
+    key(req, file, cb) {
+      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+    }
   }),
-  limits: { fileSize: 20 * 1024 * 1024 }
+  limits: { fileSize: 20 * 1024 * 1024 } //20MB
 });
 
 
@@ -77,8 +82,8 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { //addPos
 
 
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { // POST /post/images
-  console.log(req.files);
-  res.json(req.files.map((v) => v.filename));
+  console.log(req.files); //업로드된 이미지의 정보들
+  res.json(req.files.map((v) => v.location));
 });
 
 

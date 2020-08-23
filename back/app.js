@@ -29,8 +29,8 @@ const initExpress = () => {
   }));
 
   app.use('/', express.static(path.join(__dirname, 'imgs')));
-  app.use(express.json());
-  app.use(express.urlencoded({ limit: '50mb', extended: true }));
+  app.use(express.json()); //axios로 json형식으로 올때
+  app.use(express.urlencoded({ limit: '50mb', extended: true })); //일반 form형태로 올때
   app.use(cookieParser(process.env.COOKIE_SECRET));
   app.use(session({
     saveUninitialized: false,

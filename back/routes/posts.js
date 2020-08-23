@@ -65,18 +65,4 @@ router.get('/', async (req, res, next) => { // loadPosts
   }
 });
 
-router.get('/main', async (req, res, next) => { // loadPosts
-  try {
-    const posts = await Post.findAll({
-      limit: 5,
-      order: ['createdAt', 'DESC'],
-    });
-
-    res.status(200).json(posts);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
-
 module.exports = router;
