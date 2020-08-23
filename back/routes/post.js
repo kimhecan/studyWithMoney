@@ -83,7 +83,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { //addPos
 
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { // POST /post/images
   console.log(req.files); //업로드된 이미지의 정보들
-  res.json(req.files.map((v) => v.location));
+  res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/')));
 });
 
 
